@@ -1089,15 +1089,7 @@ input[inputmode="numeric"]{
           <label><input type="radio" name="accountType" value="old" checked><span>Existing Account</span></label>
           <label><input type="radio" name="accountType" value="new"><span>New Account</span></label>
         </div>
-        <div class="store-status-wrap">
-          <span class="store-mini-label">Status</span>
-          <div class="store-status-toggle" aria-label="Status penjualan">
-            <label><input type="radio" name="storeStatus" value="pending" checked><span>Pending</span></label>
-            <label><input type="radio" name="storeStatus" value="selling"><span>Proses Jual</span></label>
-            <label><input type="radio" name="storeStatus" value="done"><span>Selesai</span></label>
-          </div>
-        </div>
-        <div class="store-draft-note">Tanggal dan nama akun wajib diisi. Plus Fee opsional dan bisa dikosongkan.</div>
+        <div class="store-draft-note">Data baru otomatis berstatus Pending. Status dapat diubah setelah data dibuat.</div>
         <div class="form-grid store-form-grid">
           <label class="field"><span>Tanggal</span><input id="storeDate" type="date" required /></label>
           <label class="field"><span>Tanggal beli</span><input id="storeBuyDate" type="date" required /></label>
@@ -1391,14 +1383,14 @@ function renderStore(){
     const status=r.status||'pending';
     const profitHtml=status==='done'
       ? `<span class="${profit<0?'store-profit-negative':'store-profit-positive'}">${currency(profit)}</span>`
-      : `<span class="store-profit-pending">${Number(r.salePrice||0)||Number(r.capital||0)||Number(r.plusCost||0)||Number(r.accountCost||0)?currency(profit):'—'}</span>`;
+      : `<span class="store-profit-pending">${Number((r.sales||[]).reduce((a,s)=>a+Number(s.amount||0),0))||Number(r.capital||0)||Number(r.plusCost||0)||Number(r.accountCost||0)?currency(profit):'—'}</span>`;
     return `<tr>
       <td>${formatDate(r.date)}</td>
       <td><div class="store-account-cell"><div><strong>${escapeHtml(r.accountName)}</strong>${r.accountType==='new'?`<div class="store-source-note">New Account${Number(r.accountCost||0)?` · Account Cost ${currency(r.accountCost)}`:' · Account Cost opsional'}</div>`:'<div class="store-source-note">Existing Account</div>'}<span class="store-status-badge ${status}">${storeStatusLabel(status)}</span></div><div class="store-inline-actions"><button class="icon-action" data-store-edit="${r.id}" aria-label="Edit penjualan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"/></svg></button><button class="icon-action" data-store-delete="${r.id}" aria-label="Hapus penjualan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 7h16M9 7V4h6v3M8 11v6M12 11v6M16 11v6M6 7l1 14h10l1-14"/></svg></button></div></div></td>
       <td class="text-right">${storeValue(r.robux,'number')}</td>
       <td class="text-right">${storeValue(r.capital)}</td>
       <td class="text-right">${storeValue(r.plusCost)}</td>
-      <td class="text-right">${storeValue(r.salePrice)}</td>
+      <td class="text-right">${storeValue((r.sales||[]).reduce((a,s)=>a+Number(s.amount||0),0))}</td>
       <td class="text-right">${profitHtml}</td>
     </tr>`;
   }).join(''):'<tr><td colspan="7"><div class="store-empty-note">Belum ada penjualan store pada periode ini.</div></td></tr>';
@@ -1440,7 +1432,7 @@ function updateStoreProfitPreview(){
   const capital=parseAmount($('#storeCapital')?.value||'0');
   const plus=parseAmount($('#storePlusCost')?.value||'0');
   const type=document.querySelector('input[name="accountType"]:checked')?.value||'old';
-  const status=document.querySelector('input[name="storeStatus"]:checked')?.value||'pending';
+  const status=old?.status||'pending';
   const account=type==='new'?parseAmount($('#storeAccountCost')?.value||'0'):0;
   const profit=sale-capital-plus-account;
   const hasValue=sale||capital||plus||account;
@@ -1452,9 +1444,9 @@ function updateStoreProfitPreview(){
 }
 function openStoreModal(item=null){
   $('#storeModal').classList.remove('hidden'); $('#storeModal').setAttribute('aria-hidden','false'); $('#storeForm').reset(); $('#storeId').value=''; $('#storeFormTitle').textContent='New Store Entry';
-  document.querySelector('input[name="accountType"][value="old"]').checked=true; document.querySelector('input[name="storeStatus"][value="pending"]').checked=true; $('#storeDate').value=selectedDefaultDate();
+  document.querySelector('input[name="accountType"][value="old"]').checked=true; $('#storeDate').value=selectedDefaultDate();
   if(item){
-    $('#storeId').value=item.id; $('#storeDate').value=item.date; $('#storeBuyDate').value=item.buyDate||item.date; $('#storeSellDate').value=item.sellDate||''; $('#storeAccountName').value=item.accountName||''; $('#storeRobux').value=Number(item.robux||0)?Number(item.robux).toLocaleString('id-ID'):''; $('#storeCapital').value=Number(item.capital||0)?Number(item.capital).toLocaleString('id-ID'):''; $('#storePlusCost').value=Number(item.plusCost||0)?Number(item.plusCost).toLocaleString('id-ID'):''; $('#storeSalePrice').value=Number(item.salePrice||0)?Number(item.salePrice).toLocaleString('id-ID'):''; $('#storeAccountCost').value=Number(item.accountCost||0)?Number(item.accountCost).toLocaleString('id-ID'):'';
+    $('#storeId').value=item.id; $('#storeDate').value=item.date; $('#storeAccountName').value=item.accountName||''; $('#storeRobux').value=Number(item.robux||0)?Number(item.robux).toLocaleString('id-ID'):''; $('#storeCapital').value=Number(item.capital||0)?Number(item.capital).toLocaleString('id-ID'):''; $('#storePlusCost').value=Number(item.plusCost||0)?Number(item.plusCost).toLocaleString('id-ID'):''; $('#storeSalePrice').value=Number(item.salePrice||0)?Number(item.salePrice).toLocaleString('id-ID'):''; $('#storeAccountCost').value=Number(item.accountCost||0)?Number(item.accountCost).toLocaleString('id-ID'):'';
     const type=item.accountType==='new'?'new':'old'; document.querySelector(`input[name="accountType"][value="${type}"]`).checked=true; const status=['pending','selling','done'].includes(item.status)?item.status:'pending'; document.querySelector(`input[name="storeStatus"][value="${status}"]`).checked=true; $('#storeFormTitle').textContent='Edit Store Entry';
   }
   updateStoreAccountCostVisibility(); updateStoreProfitPreview(); setTimeout(()=>$('#storeAccountName').focus(),30);
@@ -1517,7 +1509,7 @@ $('#storeForm').addEventListener('submit',e=>{
   const old=state.store.find(x=>x.id===id);
   if(old && old.status==='done') return toast('Status selesai sudah dikunci.');
   const accountType=document.querySelector('input[name="accountType"]:checked')?.value||'old';
-  const status=document.querySelector('input[name="storeStatus"]:checked')?.value||'pending';
+  const status=old?.status||'pending';
   const plus=parseAmount($('#storePlusCost').value);
   if(status==='selling' && plus<=0) return toast('Saat proses, Plus Fee wajib diisi.');
   const record={
@@ -1532,7 +1524,7 @@ $('#storeForm').addEventListener('submit',e=>{
     status,
     sales:old?.sales||[]
   };
-  if(!record.date||!record.accountName||!record.capital) return toast('Nama akun dan modal wajib diisi.');
+  if(!record.date||!record.accountName||!record.capital) return toast('Nama akun, tanggal beli, dan modal wajib diisi.');
   if(id) state.store=state.store.map(r=>r.id===id?record:r); else state.store.push(record);
   syncStoreTransactions(record);
   saveStore(); saveTransactions(); setupFilters(); render(); closeStoreModal();
