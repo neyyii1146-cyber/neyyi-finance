@@ -1245,7 +1245,8 @@ function storeMonthRecords(month=state.month,year=state.year){
   return state.store.filter(r=>{ const d=new Date(r.date+'T00:00:00'); return d.getMonth()===month && d.getFullYear()===year; });
 }
 function storeProfit(record){
-  return (Number(record.salePrice)||0) - (Number(record.capital)||0) - (Number(record.plusCost)||0) - (Number(record.accountCost)||0);
+  const sales=(record.sales||[]).reduce((s,x)=>s+(Number(x.amount)||0),0);
+  return sales-(Number(record.capital)||0)-(Number(record.plusCost)||0)-(Number(record.accountCost)||0);
 }
 function storeStatusLabel(status){
   return status==='done'?'Selesai':status==='selling'?'Proses Jual':'Pending';
@@ -1261,27 +1262,27 @@ function syncStoreTransactions(record){
   if(cost>0){
     state.transactions.push({
       id:makeId(),
-      date:record.buyDate || record.date,
+      date:record.date,
       type:'expense',
       amount:cost,
       note:`Store · Modal ${record.accountName}`,
       storeId:record.id,
-      linkedSource:'store',
-      storePart:'cost'
+      linkedSource:'store'
     });
   }
-  if((Number(record.salePrice)||0)>0 && record.sellDate){
-    state.transactions.push({
-      id:makeId(),
-      date:record.sellDate,
-      type:'income',
-      amount:Number(record.salePrice),
-      note:`Store · Penjualan ${record.accountName}`,
-      storeId:record.id,
-      linkedSource:'store',
-      storePart:'sale'
-    });
-  }
+  (record.sales||[]).forEach(s=>{
+    if(Number(s.amount)>0){
+      state.transactions.push({
+        id:makeId(),
+        date:s.date,
+        type:'income',
+        amount:Number(s.amount),
+        note:`Store · Penjualan ${record.accountName}`,
+        storeId:record.id,
+        linkedSource:'store'
+      });
+    }
+  });
 }
 function removeStoreTransactions(storeId){ state.transactions=state.transactions.filter(t=>t.storeId!==storeId); }
 
@@ -1513,16 +1514,29 @@ $('#transactionForm').addEventListener('submit',e=>{
 $('#storeForm').addEventListener('submit',e=>{
   e.preventDefault();
   const id=$('#storeId').value;
+  const old=state.store.find(x=>x.id===id);
+  if(old && old.status==='done') return toast('Status selesai sudah dikunci.');
   const accountType=document.querySelector('input[name="accountType"]:checked')?.value||'old';
   const status=document.querySelector('input[name="storeStatus"]:checked')?.value||'pending';
-  const plusFeeRaw=$('#storePlusCost').value.trim();
+  const plus=parseAmount($('#storePlusCost').value);
+  if(status==='selling' && plus<=0) return toast('Saat proses, Plus Fee wajib diisi.');
   const record={
-    id:id||makeId(), date:$('#storeDate').value, buyDate:$('#storeBuyDate').value || $('#storeDate').value, sellDate:$('#storeSellDate').value || null, accountName:$('#storeAccountName').value.trim(), robux:parseAmount($('#storeRobux').value), capital:parseAmount($('#storeCapital').value), plusCost:parseAmount(plusFeeRaw), salePrice:parseAmount($('#storeSalePrice').value), accountType, accountCost:accountType==='new'?parseAmount($('#storeAccountCost').value):0, status
+    id:id||makeId(),
+    date:$('#storeDate').value,
+    accountName:$('#storeAccountName').value.trim(),
+    robux:parseAmount($('#storeRobux').value),
+    capital:parseAmount($('#storeCapital').value),
+    plusCost:plus,
+    accountType,
+    accountCost:accountType==='new'?parseAmount($('#storeAccountCost').value):0,
+    status,
+    sales:old?.sales||[]
   };
-  if(!record.date||!record.buyDate||!record.accountName) return toast('Tanggal beli dan nama akun perlu diisi.');
-  if(record.sellDate && record.sellDate < record.buyDate) return toast('Tanggal jual tidak boleh sebelum tanggal beli.');
+  if(!record.date||!record.accountName||!record.capital) return toast('Nama akun dan modal wajib diisi.');
   if(id) state.store=state.store.map(r=>r.id===id?record:r); else state.store.push(record);
-  syncStoreTransactions(record); saveStore(); saveTransactions(); setupFilters(); render(); closeStoreModal(); toast(id?'Data store diperbarui.':'Data store disimpan.');
+  syncStoreTransactions(record);
+  saveStore(); saveTransactions(); setupFilters(); render(); closeStoreModal();
+  toast(id?'Data store diperbarui.':'Store ditambahkan.');
 });
 
 $('#wishlistForm').addEventListener('submit',e=>{
