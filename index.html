@@ -1097,13 +1097,15 @@ input[inputmode="numeric"]{
             <label><input type="radio" name="storeStatus" value="done"><span>Selesai</span></label>
           </div>
         </div>
-        <div class="store-draft-note">Tanggal, nama akun, dan Plus Fee opsional diisi. Data lainnya boleh kamu lengkapi bertahap lalu edit lagi nanti.</div>
+        <div class="store-draft-note">Tanggal dan nama akun wajib diisi. Plus Fee opsional dan bisa dikosongkan.</div>
         <div class="form-grid store-form-grid">
           <label class="field"><span>Tanggal</span><input id="storeDate" type="date" required /></label>
+          <label class="field"><span>Tanggal beli</span><input id="storeBuyDate" type="date" required /></label>
+          <label class="field"><span>Tanggal jual <small>(opsional)</small></span><input id="storeSellDate" type="date" /></label>
           <label class="field"><span>Nama akun</span><input id="storeAccountName" type="text" maxlength="60" placeholder="Contoh: NeyyiStore01" required /></label>
           <label class="field"><span>Jumlah Robux <small>(boleh nanti)</small></span><input id="storeRobux" inputmode="numeric" placeholder="Kosongkan jika belum ada" /></label>
           <label class="field"><span>Modal beli <small>(boleh nanti)</small></span><div class="currency-input"><span>Rp</span><input id="storeCapital" inputmode="numeric" placeholder="Kosongkan jika belum ada" /></div></label>
-          <label class="field"><span>Plus Fee <small>(wajib)</small></span><div class="currency-input"><span>Rp</span><input id="storePlusCost" inputmode="numeric" placeholder="Masukkan biaya plus" required /></div></label>
+          <label class="field"><span>Plus Fee <small>(opsional)</small></span><div class="currency-input"><span>Rp</span><input id="storePlusCost" inputmode="numeric" placeholder="Kosongkan jika tidak ada biaya plus" /></div></label>
           <label class="field"><span>Harga jual <small>(bisa diisi bertahap)</small></span><div class="currency-input"><span>Rp</span><input id="storeSalePrice" inputmode="numeric" placeholder="Isi total yang sudah terjual" /></div></label>
           <label id="storeAccountCostField" class="field full store-account-cost-field hidden-field"><span>Account Cost <small>(opsional · hanya New Account)</small></span><div class="currency-input"><span>Rp</span><input id="storeAccountCost" inputmode="numeric" placeholder="Kosongkan jika tidak ada biaya akun" /></div></label>
         </div>
@@ -1257,10 +1259,28 @@ function syncStoreTransactions(record){
   state.transactions=state.transactions.filter(t=>t.storeId!==record.id);
   const cost=(Number(record.capital)||0)+(Number(record.plusCost)||0)+(Number(record.accountCost)||0);
   if(cost>0){
-    state.transactions.push({id:makeId(),date:record.date,type:'expense',amount:cost,note:`Store · Modal ${record.accountName}`,storeId:record.id,linkedSource:'store',storePart:'cost'});
+    state.transactions.push({
+      id:makeId(),
+      date:record.buyDate || record.date,
+      type:'expense',
+      amount:cost,
+      note:`Store · Modal ${record.accountName}`,
+      storeId:record.id,
+      linkedSource:'store',
+      storePart:'cost'
+    });
   }
-  if((Number(record.salePrice)||0)>0){
-    state.transactions.push({id:makeId(),date:record.date,type:'income',amount:Number(record.salePrice),note:`Store · Penjualan ${record.accountName}`,storeId:record.id,linkedSource:'store',storePart:'sale'});
+  if((Number(record.salePrice)||0)>0 && record.sellDate){
+    state.transactions.push({
+      id:makeId(),
+      date:record.sellDate,
+      type:'income',
+      amount:Number(record.salePrice),
+      note:`Store · Penjualan ${record.accountName}`,
+      storeId:record.id,
+      linkedSource:'store',
+      storePart:'sale'
+    });
   }
 }
 function removeStoreTransactions(storeId){ state.transactions=state.transactions.filter(t=>t.storeId!==storeId); }
@@ -1433,7 +1453,7 @@ function openStoreModal(item=null){
   $('#storeModal').classList.remove('hidden'); $('#storeModal').setAttribute('aria-hidden','false'); $('#storeForm').reset(); $('#storeId').value=''; $('#storeFormTitle').textContent='New Store Entry';
   document.querySelector('input[name="accountType"][value="old"]').checked=true; document.querySelector('input[name="storeStatus"][value="pending"]').checked=true; $('#storeDate').value=selectedDefaultDate();
   if(item){
-    $('#storeId').value=item.id; $('#storeDate').value=item.date; $('#storeAccountName').value=item.accountName||''; $('#storeRobux').value=Number(item.robux||0)?Number(item.robux).toLocaleString('id-ID'):''; $('#storeCapital').value=Number(item.capital||0)?Number(item.capital).toLocaleString('id-ID'):''; $('#storePlusCost').value=Number(item.plusCost||0)?Number(item.plusCost).toLocaleString('id-ID'):''; $('#storeSalePrice').value=Number(item.salePrice||0)?Number(item.salePrice).toLocaleString('id-ID'):''; $('#storeAccountCost').value=Number(item.accountCost||0)?Number(item.accountCost).toLocaleString('id-ID'):'';
+    $('#storeId').value=item.id; $('#storeDate').value=item.date; $('#storeBuyDate').value=item.buyDate||item.date; $('#storeSellDate').value=item.sellDate||''; $('#storeAccountName').value=item.accountName||''; $('#storeRobux').value=Number(item.robux||0)?Number(item.robux).toLocaleString('id-ID'):''; $('#storeCapital').value=Number(item.capital||0)?Number(item.capital).toLocaleString('id-ID'):''; $('#storePlusCost').value=Number(item.plusCost||0)?Number(item.plusCost).toLocaleString('id-ID'):''; $('#storeSalePrice').value=Number(item.salePrice||0)?Number(item.salePrice).toLocaleString('id-ID'):''; $('#storeAccountCost').value=Number(item.accountCost||0)?Number(item.accountCost).toLocaleString('id-ID'):'';
     const type=item.accountType==='new'?'new':'old'; document.querySelector(`input[name="accountType"][value="${type}"]`).checked=true; const status=['pending','selling','done'].includes(item.status)?item.status:'pending'; document.querySelector(`input[name="storeStatus"][value="${status}"]`).checked=true; $('#storeFormTitle').textContent='Edit Store Entry';
   }
   updateStoreAccountCostVisibility(); updateStoreProfitPreview(); setTimeout(()=>$('#storeAccountName').focus(),30);
@@ -1497,10 +1517,10 @@ $('#storeForm').addEventListener('submit',e=>{
   const status=document.querySelector('input[name="storeStatus"]:checked')?.value||'pending';
   const plusFeeRaw=$('#storePlusCost').value.trim();
   const record={
-    id:id||makeId(), date:$('#storeDate').value, accountName:$('#storeAccountName').value.trim(), robux:parseAmount($('#storeRobux').value), capital:parseAmount($('#storeCapital').value), plusCost:parseAmount(plusFeeRaw), salePrice:parseAmount($('#storeSalePrice').value), accountType, accountCost:accountType==='new'?parseAmount($('#storeAccountCost').value):0, status
+    id:id||makeId(), date:$('#storeDate').value, buyDate:$('#storeBuyDate').value || $('#storeDate').value, sellDate:$('#storeSellDate').value || null, accountName:$('#storeAccountName').value.trim(), robux:parseAmount($('#storeRobux').value), capital:parseAmount($('#storeCapital').value), plusCost:parseAmount(plusFeeRaw), salePrice:parseAmount($('#storeSalePrice').value), accountType, accountCost:accountType==='new'?parseAmount($('#storeAccountCost').value):0, status
   };
-  if(!record.date||!record.accountName) return toast('Tanggal dan nama akun tetap perlu diisi.');
-  if(!plusFeeRaw) return toast('Plus Fee opsional diisi.');
+  if(!record.date||!record.buyDate||!record.accountName) return toast('Tanggal beli dan nama akun perlu diisi.');
+  if(record.sellDate && record.sellDate < record.buyDate) return toast('Tanggal jual tidak boleh sebelum tanggal beli.');
   if(id) state.store=state.store.map(r=>r.id===id?record:r); else state.store.push(record);
   syncStoreTransactions(record); saveStore(); saveTransactions(); setupFilters(); render(); closeStoreModal(); toast(id?'Data store diperbarui.':'Data store disimpan.');
 });
@@ -1828,9 +1848,6 @@ sb.auth.onAuthStateChange((event,session)=>{
 <button class="secondary-btn" onclick="closeRobuxTimeline()">Tutup</button>
 </div></div>
 <script>
-/* Store timeline logic: buy_date controls expense month; sell_date controls income/profit month.
-   Plus fee is optional.
-*/
 /* Robux timeline logic: one record, two events.
    buy_date affects expense month; sell_date affects income/profit month. */
 const ROBUX_TABLE='robux_transactions';
@@ -1839,7 +1856,7 @@ function openRobuxTimeline(item){
  document.getElementById('robuxTimelineContent').innerHTML=`
  <div class="robux-line"><span>🛒 Dibeli</span><strong>${item.buy_date||'-'}</strong></div>
  <div class="robux-line"><span>💰 Dijual</span><strong>${item.sell_date||'-'}</strong></div>
- <div class="robux-line"><span>📈 Profit</span><strong>Rp ${((((Number(item.sell_value)||0)-(Number(item.buy_cost)||0)-(Number(item.plus_fee)||0))).toLocaleString('id-ID')}</strong></div>`;
+ <div class="robux-line"><span>📈 Profit</span><strong>Rp ${((Number(item.sell_value)||0)-(Number(item.buy_cost)||0)).toLocaleString('id-ID')}</strong></div>`;
  modal.classList.add('show');
 }
 function closeRobuxTimeline(){document.getElementById('robuxTimelineModal').classList.remove('show');}
