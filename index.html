@@ -1097,7 +1097,7 @@ input[inputmode="numeric"]{
             <label><input type="radio" name="storeStatus" value="done"><span>Selesai</span></label>
           </div>
         </div>
-        <div class="store-draft-note">Tanggal, nama akun, dan Plus Fee wajib diisi. Data lainnya boleh kamu lengkapi bertahap lalu edit lagi nanti.</div>
+        <div class="store-draft-note">Tanggal, nama akun, dan Plus Fee opsional diisi. Data lainnya boleh kamu lengkapi bertahap lalu edit lagi nanti.</div>
         <div class="form-grid store-form-grid">
           <label class="field"><span>Tanggal</span><input id="storeDate" type="date" required /></label>
           <label class="field"><span>Nama akun</span><input id="storeAccountName" type="text" maxlength="60" placeholder="Contoh: NeyyiStore01" required /></label>
@@ -1500,7 +1500,7 @@ $('#storeForm').addEventListener('submit',e=>{
     id:id||makeId(), date:$('#storeDate').value, accountName:$('#storeAccountName').value.trim(), robux:parseAmount($('#storeRobux').value), capital:parseAmount($('#storeCapital').value), plusCost:parseAmount(plusFeeRaw), salePrice:parseAmount($('#storeSalePrice').value), accountType, accountCost:accountType==='new'?parseAmount($('#storeAccountCost').value):0, status
   };
   if(!record.date||!record.accountName) return toast('Tanggal dan nama akun tetap perlu diisi.');
-  if(!plusFeeRaw) return toast('Plus Fee wajib diisi.');
+  if(!plusFeeRaw) return toast('Plus Fee opsional diisi.');
   if(id) state.store=state.store.map(r=>r.id===id?record:r); else state.store.push(record);
   syncStoreTransactions(record); saveStore(); saveTransactions(); setupFilters(); render(); closeStoreModal(); toast(id?'Data store diperbarui.':'Data store disimpan.');
 });
@@ -1828,6 +1828,9 @@ sb.auth.onAuthStateChange((event,session)=>{
 <button class="secondary-btn" onclick="closeRobuxTimeline()">Tutup</button>
 </div></div>
 <script>
+/* Store timeline logic: buy_date controls expense month; sell_date controls income/profit month.
+   Plus fee is optional.
+*/
 /* Robux timeline logic: one record, two events.
    buy_date affects expense month; sell_date affects income/profit month. */
 const ROBUX_TABLE='robux_transactions';
@@ -1836,7 +1839,7 @@ function openRobuxTimeline(item){
  document.getElementById('robuxTimelineContent').innerHTML=`
  <div class="robux-line"><span>🛒 Dibeli</span><strong>${item.buy_date||'-'}</strong></div>
  <div class="robux-line"><span>💰 Dijual</span><strong>${item.sell_date||'-'}</strong></div>
- <div class="robux-line"><span>📈 Profit</span><strong>Rp ${((Number(item.sell_value)||0)-(Number(item.buy_cost)||0)).toLocaleString('id-ID')}</strong></div>`;
+ <div class="robux-line"><span>📈 Profit</span><strong>Rp ${((((Number(item.sell_value)||0)-(Number(item.buy_cost)||0)-(Number(item.plus_fee)||0))).toLocaleString('id-ID')}</strong></div>`;
  modal.classList.add('show');
 }
 function closeRobuxTimeline(){document.getElementById('robuxTimelineModal').classList.remove('show');}
