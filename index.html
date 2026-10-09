@@ -1,0 +1,1887 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f6c3d8" />
+  <title>My Finance — Soft Pink</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Manrope:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+
+:root{
+  --bg:#fff4f8;
+  --surface:#fffafd;
+  --surface-2:#fff0f5;
+  --surface-3:#fde6f0;
+  --text:#342a31;
+  --muted:#9d7f8f;
+  --line:#efcfdd;
+  --line-soft:#f5dfe9;
+  --pink:#efa9c8;
+  --pink-2:#f7c7db;
+  --pink-3:#fde5ef;
+  --pink-deep:#b9638a;
+  --positive:#6b776f;
+  --negative:#8a5f72;
+  --shadow-xs:0 1px 0 rgba(255,255,255,.85) inset;
+  --shadow-sm:0 12px 30px rgba(128,73,100,.055);
+  --shadow-md:0 24px 70px rgba(128,73,100,.09);
+  --shadow-lg:0 42px 110px rgba(132,64,99,.13);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;min-height:100vh;color:var(--text);
+  font-family:"Manrope",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:
+    radial-gradient(circle at 50% -10%,rgba(247,182,211,.38),transparent 31%),
+    radial-gradient(circle at 100% 38%,rgba(255,214,232,.36),transparent 25%),
+    linear-gradient(180deg,#fff7fa 0%,#fff2f7 45%,#fff7fa 100%);
+}
+button,input,select{font:inherit}button{cursor:pointer}svg{display:block;stroke-width:1.55}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid rgba(224,139,177,.22);outline-offset:2px}
+
+.app-shell{min-height:100vh}
+.top-nav-wrap{padding:18px 22px 0;position:sticky;top:0;z-index:25;pointer-events:none}
+.top-nav{
+  max-width:1220px;margin:0 auto;min-height:72px;padding:10px 12px 10px 16px;
+  display:grid;grid-template-columns:1fr auto;align-items:center;gap:18px;
+  background:rgba(255,250,253,.86);backdrop-filter:blur(24px) saturate(1.15);
+  border:1px solid rgba(236,197,214,.9);border-radius:24px;
+  box-shadow:0 14px 42px rgba(121,67,94,.07),inset 0 1px 0 rgba(255,255,255,.9);
+  pointer-events:auto
+}
+.brand{display:flex;align-items:center;gap:11px;min-width:0}
+.brand-mark{
+  width:42px;height:42px;border-radius:14px;display:grid;place-items:center;flex:0 0 auto;
+  background:linear-gradient(145deg,#f9d3e3,#efabc8);color:#8b4d6a;border:1px solid rgba(218,149,180,.5);
+  box-shadow:0 9px 22px rgba(191,98,142,.12),inset 0 1px 0 rgba(255,255,255,.72)
+}
+.brand-mark svg{width:19px;height:19px}
+.brand-copy{min-width:0}.brand strong{display:block;font-size:14px;letter-spacing:-.02em}.brand span{display:block;margin-top:3px;font-size:9px;text-transform:uppercase;letter-spacing:.16em;color:var(--muted)}
+.nav-menu{display:flex;align-items:center;gap:5px;padding:5px;background:rgba(251,229,239,.62);border:1px solid rgba(236,198,216,.75);border-radius:16px}
+.nav-item{
+  border:0;background:transparent;color:#866d7b;padding:9px 14px;border-radius:11px;font-size:12px;font-weight:650;letter-spacing:-.01em
+}
+.nav-item:hover{background:rgba(255,255,255,.65)}
+.nav-item.active{background:#fff;color:#6b4558;box-shadow:0 5px 14px rgba(127,71,99,.08),inset 0 0 0 1px rgba(238,207,221,.85)}
+
+.main-content{max-width:1220px;margin:0 auto;padding:44px 24px 64px}
+.topbar{display:flex;align-items:flex-end;justify-content:space-between;gap:22px;margin-bottom:28px;padding:0 4px}
+.eyebrow{margin:0 0 8px;color:#b46c8d;font-size:9px;font-weight:800;letter-spacing:.21em;text-transform:uppercase}
+h1,h2,h3,p{margin-top:0}h1{margin-bottom:0;font-size:29px;letter-spacing:-.045em;font-weight:720;color:#553c49}
+.topbar-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+select,input{border:1px solid var(--line);border-radius:14px;background:rgba(255,252,254,.9);color:var(--text);padding:11px 13px;outline:none;box-shadow:var(--shadow-xs)}
+select:focus,input:focus{border-color:#dda0bc;box-shadow:0 0 0 4px rgba(228,150,185,.10)}
+.primary-btn,.secondary-btn{border:0;border-radius:14px;padding:11px 15px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.primary-btn{background:#b9698e;color:#fff;box-shadow:0 12px 28px rgba(160,75,116,.16)}
+.primary-btn:hover{background:#aa5c81}.primary-btn svg{width:16px;height:16px}
+.secondary-btn{background:#fff0f6;color:#775665;border:1px solid var(--line)}
+.text-btn{border:0;background:transparent;color:#aa5d81;font-size:12px;font-weight:700;padding:8px 0}
+
+.view{display:none}.view.active{display:block}
+#dashboardView{max-width:1120px;margin:0 auto}
+.dashboard-stage{position:relative;padding-bottom:12px}
+.balance-hero{
+  min-height:350px;padding:48px 54px;border-radius:40px;position:relative;overflow:hidden;
+  display:grid;grid-template-columns:1fr;align-items:center;gap:12px;
+  background:linear-gradient(135deg,#f7c4d9 0%,#f3b4cf 46%,#f9d7e5 100%);
+  border:1px solid rgba(226,160,190,.55);
+  box-shadow:var(--shadow-lg),inset 0 1px 0 rgba(255,255,255,.8)
+}
+.balance-hero:before{
+  content:"";position:absolute;width:430px;height:430px;border-radius:50%;right:-120px;top:-210px;
+  border:1px solid rgba(255,255,255,.42);box-shadow:0 0 0 52px rgba(255,255,255,.06),0 0 0 104px rgba(255,255,255,.035)
+}
+.balance-hero:after{content:"";position:absolute;inset:auto 0 0;height:34%;background:linear-gradient(180deg,transparent,rgba(255,255,255,.08));pointer-events:none}
+.balance-main{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:center;min-height:230px}
+.balance-label{display:block;font-size:10px;letter-spacing:.19em;text-transform:uppercase;font-weight:800;color:#86556d}
+.balance-hero h2{font-size:clamp(48px,6.1vw,78px);line-height:.98;letter-spacing:-.068em;margin:17px 0 18px;color:#4c2f3e;font-weight:760}
+.balance-hero small{display:block;max-width:440px;font-size:12px;line-height:1.7;color:#805a6d}
+
+.flow-grid{width:calc(100% - 80px);margin:-40px auto 34px;position:relative;z-index:5;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.flow-card{
+  min-height:138px;padding:25px 28px;border-radius:27px;background:rgba(255,251,253,.95);border:1px solid rgba(231,190,208,.92);
+  box-shadow:0 22px 55px rgba(126,66,96,.105),inset 0 1px 0 rgba(255,255,255,.9);
+  display:grid;grid-template-columns:auto 1fr;align-items:center;gap:18px
+}
+.flow-icon{width:48px;height:48px;border-radius:16px;background:#f9ddea;border:1px solid #e9bfd2;color:#88556d;display:grid;place-items:center}
+.flow-icon svg{width:19px;height:19px}.flow-card span{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.14em;color:#a17a8d;font-weight:800}.flow-card h3{font-size:24px;letter-spacing:-.045em;margin:7px 0 0;color:#5f4351}.flow-meta{font-size:10px;color:#ae8b9b;text-align:right;line-height:1.45}
+
+
+.dream-section{margin:0 0 20px;padding:24px;border-radius:28px;background:linear-gradient(135deg,rgba(255,241,247,.96),rgba(255,250,253,.96));border:1px solid rgba(237,199,217,.92);box-shadow:0 18px 44px rgba(126,66,96,.08),inset 0 1px 0 rgba(255,255,255,.9)}
+.dream-head{display:grid;grid-template-columns:minmax(210px,.72fr) minmax(0,1.28fr);gap:28px;align-items:stretch}
+.dream-total{padding:24px;border-radius:22px;background:linear-gradient(145deg,#f6c4d8,#f9dce8);border:1px solid rgba(225,164,191,.7);display:flex;flex-direction:column;justify-content:space-between;min-height:175px}
+.dream-kicker{font-size:9px;text-transform:uppercase;letter-spacing:.17em;font-weight:800;color:#8a5a70}
+.dream-total h3{font-size:32px;letter-spacing:-.05em;color:#563c49;margin:12px 0 6px}
+.dream-total p{font-size:10.5px;line-height:1.55;color:#866273;margin:0}
+.dream-list-wrap{min-width:0;display:flex;flex-direction:column}
+.dream-list-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.dream-list-top h3{margin:0;font-size:15px;color:#5b404d;letter-spacing:-.02em}
+.dream-add{border:1px solid #e8c2d4;background:#fff;color:#765064;border-radius:12px;padding:8px 11px;font-size:10.5px;font-weight:750;display:inline-flex;align-items:center;gap:6px;box-shadow:0 5px 16px rgba(126,66,96,.055)}
+.dream-add svg{width:14px;height:14px}
+
+.wishlist-stats{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
+  margin:0 0 16px;
+}
+.wishlist-stat{
+  min-width:0;
+  padding:17px 16px;
+  border-radius:19px;
+  background:linear-gradient(145deg,rgba(255,252,254,.96),rgba(252,235,244,.78));
+  border:1px solid rgba(235,202,217,.95);
+  box-shadow:0 10px 28px rgba(113,61,87,.055),inset 0 1px 0 rgba(255,255,255,.88);
+}
+.wishlist-stat-label{
+  display:block;
+  margin-bottom:8px;
+  color:#a17a8d;
+  font-size:8.5px;
+  line-height:1.3;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+}
+.wishlist-stat strong{
+  display:block;
+  color:#5f4351;
+  font-size:20px;
+  line-height:1.1;
+  letter-spacing:-.04em;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.wishlist-stat.money strong{font-size:16px}
+@media(max-width:760px){
+  .wishlist-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:12px}
+  .wishlist-stat{padding:13px 12px;border-radius:16px}
+  .wishlist-stat-label{font-size:7.5px;margin-bottom:6px}
+  .wishlist-stat strong{font-size:17px}
+  .wishlist-stat.money strong{font-size:13px}
+}
+
+.wishlist-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;min-width:0}
+.wish-card{position:relative;min-width:0;padding:15px 42px 15px 15px;border-radius:18px;background:rgba(255,255,255,.87);border:1px solid #efd7e2;box-shadow:0 8px 24px rgba(113,61,87,.05)}
+.wish-card strong{display:block;font-size:11.5px;color:#604651;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wish-card span{display:block;margin-top:5px;font-size:12px;font-weight:800;color:#95627a}
+.wish-delete{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:27px;height:27px;border:0;border-radius:9px;background:#fae9f0;color:#926076;display:grid;place-items:center}
+.wish-delete svg{width:13px;height:13px}
+.wishlist-empty{grid-column:1/-1;min-height:105px;border:1px dashed #e7bfd1;border-radius:18px;display:grid;place-items:center;text-align:center;color:#a17d8e;font-size:10.5px;padding:16px;background:rgba(255,255,255,.42)}
+.wishlist-modal .modal-card{width:min(470px,100%)}
+
+.wish-fund-layout{align-items:stretch}
+.wish-fund-summary{display:flex;flex-direction:column;justify-content:center}
+.wish-fund-topline{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}
+.wish-percent{font-size:12px;font-weight:850;color:#7b5065;background:rgba(255,255,255,.64);border:1px solid rgba(232,194,212,.85);padding:6px 9px;border-radius:999px}
+.wish-fund-caption{margin:5px 0 14px!important;font-size:10px!important;color:#9e7488!important}
+.wish-progress{height:9px;border-radius:999px;background:#f4dbe7;border:1px solid #ebc8d8;overflow:hidden;box-shadow:inset 0 1px 2px rgba(102,59,80,.05)}
+.wish-progress-fill{height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#eaa9c5,#d983aa);transition:width .35s ease}
+.wish-progress-meta{display:flex;justify-content:space-between;gap:10px;margin-top:9px;font-size:9.5px;color:#8f6a7c}
+.wish-fund-note{margin:12px 0 0!important;font-size:9.5px!important;line-height:1.55!important;color:#a17c8e!important}
+.wishlist-subtitle{margin:4px 0 0;font-size:9.5px;color:#a07c8d}
+.wish-card{padding:14px 12px!important}
+.wish-card-main{min-width:0}
+.wish-card-actions{display:flex;align-items:center;gap:6px;margin-top:11px}
+.wish-buy,.wish-delete{position:static!important;transform:none!important;height:30px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:9px;font-weight:800}
+.wish-buy{flex:1;border:1px solid #e4bbcf;background:#f7dce9;color:#754d61;padding:0 10px}
+.wish-buy:hover{background:#f2cee0}
+.wish-buy svg{width:13px;height:13px}
+.wish-delete{width:30px;border:1px solid #ecd4df;background:#fff7fb;color:#9a7285}
+
+.panel,.summary-card{background:rgba(255,252,254,.91);border:1px solid rgba(237,207,220,.93);box-shadow:var(--shadow-md),inset 0 1px 0 rgba(255,255,255,.86)}
+.panel{padding:26px;border-radius:30px}.latest-panel{margin-top:0}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px}.panel-head h3{font-size:16px;letter-spacing:-.025em;margin-bottom:5px;color:#5b404d}.panel-head p{margin:0;color:var(--muted);font-size:11px}
+.transaction-list{display:grid}.transaction-item{display:grid;grid-template-columns:48px minmax(0,1fr) auto;align-items:center;gap:14px;padding:15px 4px;border-bottom:1px solid #f3dee8}.transaction-item:last-child{border-bottom:0}.tx-icon{width:44px;height:44px;border-radius:15px;display:grid;place-items:center;background:#f9e2ec;border:1px solid #edcad9;color:#80576a}.tx-icon svg{width:18px;height:18px}.tx-main{min-width:0}.tx-main strong,.tx-main span{display:block}.tx-main strong{font-size:13px;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#58414d}.tx-main span{font-size:10px;color:var(--muted);margin-top:4px}.tx-amount{font-size:13px;font-weight:740;color:#684654}.tx-amount.income,.tx-amount.expense{color:#684654}
+
+.toolbar{display:flex;gap:10px;justify-content:space-between;margin-bottom:18px}.search-wrap{flex:1}.search-wrap input{width:100%}.table-wrap{overflow:auto;border:1px solid #f2dce6;border-radius:20px;background:rgba(255,255,255,.54)}table{width:100%;border-collapse:collapse;min-width:720px}th,td{padding:15px 14px;border-bottom:1px solid #f3e1e9;text-align:left;font-size:12px}tbody tr:last-child td{border-bottom:0}th{color:#a07f8f;font-size:9px;text-transform:uppercase;letter-spacing:.12em;font-weight:800}.text-right{text-align:right}.amount-income,.amount-expense{color:#684654;font-weight:700}.badge{display:inline-flex;padding:6px 9px;border-radius:999px;font-size:9px;font-weight:800;background:#fae5ee;color:#80566a;border:1px solid #efcfdd}.row-actions{display:flex;justify-content:flex-end;gap:6px}.icon-action{border:1px solid #eed1de;border-radius:10px;padding:7px;background:#fff9fc;color:#896778}.icon-action svg{width:15px;height:15px}.icon-action:hover{background:#fcebf3}.empty-state{padding:32px 12px;text-align:center;color:var(--muted);font-size:12px}
+
+.summary-grid{display:grid;gap:16px;margin-bottom:20px}.report-summary{grid-template-columns:repeat(3,minmax(0,1fr))}.summary-card{padding:24px;border-radius:26px}.summary-card span{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#9f7d8e;font-weight:800}.summary-card h3{font-size:24px;margin:10px 0 0;color:#624654;letter-spacing:-.04em}
+
+.modal{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:20px}.modal.hidden{display:none}.modal-backdrop{position:absolute;inset:0;background:rgba(69,42,56,.22);backdrop-filter:blur(9px)}.modal-card{position:relative;width:min(570px,100%);background:rgba(255,250,253,.98);border:1px solid #edcddc;border-radius:30px;padding:26px;box-shadow:0 34px 100px rgba(95,48,71,.22)}.modal-head{display:flex;justify-content:space-between;align-items:start;margin-bottom:20px}.modal-head h2{margin-bottom:0;font-size:22px;color:#5b3e4c}.icon-btn{width:38px;height:38px;border:1px solid var(--line);border-radius:12px;background:#fff;color:#856674;display:grid;place-items:center}.icon-btn svg{width:17px;height:17px}.type-toggle{display:grid;grid-template-columns:1fr 1fr;gap:7px;background:#faeaf1;border:1px solid #efd1de;padding:6px;border-radius:17px;margin-bottom:20px}.type-toggle input{display:none}.type-toggle span{display:block;padding:10px;text-align:center;border-radius:11px;font-size:11px;font-weight:750;cursor:pointer;color:#997789}.type-toggle input:checked+span{background:#fff;color:#70495c;box-shadow:0 6px 15px rgba(111,61,84,.075)}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{display:grid;gap:7px}.field.full{grid-column:1/-1}.field>span{font-size:10px;text-transform:uppercase;letter-spacing:.09em;font-weight:780;color:#927181}.field input,.field select{width:100%}.currency-input{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:14px;padding-left:13px;background:#fff}.currency-input:focus-within{border-color:#dda0bc;box-shadow:0 0 0 4px rgba(228,150,185,.10)}.currency-input span{font-weight:750;color:#856574}.currency-input input{border:0;box-shadow:none!important;background:transparent}.form-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:22px}
+.toast{position:fixed;right:24px;bottom:24px;z-index:80;background:#725061;color:#fff;padding:12px 16px;border-radius:13px;box-shadow:0 18px 45px rgba(76,42,58,.2);opacity:0;transform:translateY(10px);pointer-events:none;transition:.25s;font-size:11px}.toast.show{opacity:1;transform:translateY(0)}
+
+
+.topbar-title-wrap{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;flex:1;min-width:0}
+.store-top-add{display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.store-top-add svg{width:16px;height:16px}
+#balanceValue,#incomeValue,#expenseValue,#dreamFundTotal,#wishFundPercent,#wishlistTotalCount,#wishlistPurchasedCount,#wishlistActiveCount,#wishlistPurchasedValue,#yearIncome,#yearExpense,#yearNet,#storeMonthlyProfit,
+.flow-card h3,.summary-card h3,.wishlist-stat strong,.store-table td.text-right,.store-profit-positive,.store-profit-negative,.store-profit-pending,.wish-progress-meta,.store-profit-preview strong{
+  font-family:"Plus Jakarta Sans","Manrope",system-ui,sans-serif;
+  font-variant-numeric:tabular-nums;
+  font-feature-settings:"tnum" 1,"ss01" 1;
+}
+
+@media(max-width:900px){
+.top-nav{grid-template-columns:1fr auto}
+.nav-menu{order:3;grid-column:1/-1;justify-content:center}
+.main-content{padding-top:30px}
+.balance-hero{grid-template-columns:1fr;min-height:0}
+.flow-grid{width:calc(100% - 36px)}
+}
+@media(max-width:680px){
+.top-nav-wrap{padding:10px 10px 0}
+.top-nav{border-radius:20px;padding:10px;gap:12px}
+.brand span{display:none}
+.nav-menu{width:100%;overflow:auto;justify-content:flex-start}
+.nav-item{flex:1;min-width:max-content;text-align:center}
+.main-content{padding:26px 12px 44px}
+.topbar{align-items:flex-start;flex-direction:column;margin-bottom:20px}
+.topbar-actions{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.topbar-actions select{width:100%;min-width:0}
+.topbar-actions .primary-btn{grid-column:1/-1;width:100%}
+.balance-hero{padding:34px 24px;border-radius:30px;gap:20px}
+.balance-hero h2{font-size:44px}
+.flow-grid{width:calc(100% - 20px);grid-template-columns:repeat(2,minmax(0,1fr));margin-top:-26px;gap:10px}
+.flow-card{min-height:112px;padding:20px;border-radius:22px}
+.panel{padding:20px;border-radius:24px}
+.transaction-item{grid-template-columns:44px minmax(0,1fr);align-items:start}
+.tx-amount{grid-column:2;justify-self:start;margin-top:4px}
+.report-summary{grid-template-columns:1fr}
+.form-grid{grid-template-columns:1fr}
+.field.full{grid-column:auto}
+.toolbar{flex-direction:column}
+}
+
+@media(max-width:600px){
+  body{font-size:13px}
+  .top-nav-wrap{padding:7px 7px 0}
+  .top-nav{padding:8px;border-radius:17px;gap:8px;min-height:auto}
+  .brand{gap:8px}
+  .brand-mark{width:34px;height:34px;border-radius:11px}
+  .brand-mark svg{width:15px;height:15px}
+  .brand strong{font-size:12px}
+  .nav-menu{gap:3px;padding:3px;border-radius:13px}
+  .nav-item{padding:7px 10px;border-radius:9px;font-size:10.5px}
+
+  .main-content{padding:18px 9px 32px}
+  .topbar{margin-bottom:14px;padding:0 2px;gap:10px}
+  .eyebrow{font-size:8px;margin-bottom:5px}
+  h1{font-size:22px}
+  .topbar-actions{gap:7px}
+  .topbar-actions select{height:38px;padding:8px 10px;border-radius:11px;font-size:11px}
+  .topbar-actions .primary-btn{min-height:40px;padding:9px 12px;border-radius:12px;font-size:11px}
+  .primary-btn svg{width:15px;height:15px}
+
+  .dashboard-stage{padding-top:0}
+  .balance-hero{min-height:205px;padding:25px 20px 32px;border-radius:24px}
+  .balance-main{min-height:145px}
+  .balance-label{font-size:8px;letter-spacing:.16em}
+  .balance-hero h2{font-size:36px;line-height:1;margin:12px 0 10px;letter-spacing:-.055em}
+  .balance-hero small{font-size:10px;line-height:1.5;max-width:270px}
+  .balance-hero:before{width:270px;height:270px;right:-100px;top:-135px}
+
+  .flow-grid{width:calc(100% - 10px);grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:-20px auto 20px}
+  .flow-card{min-height:84px;padding:12px 12px;border-radius:18px;gap:10px}
+  .flow-icon{width:32px;height:32px;border-radius:11px}
+  .flow-icon svg{width:14px;height:14px}
+  .flow-card span{font-size:7px;letter-spacing:.1em}
+  .flow-card h3{font-size:16px;margin-top:4px}
+
+  .panel{padding:15px;border-radius:20px}
+  .panel-head{margin-bottom:12px;gap:10px}
+  .panel-head h3{font-size:14px;margin-bottom:3px}
+  .panel-head p{font-size:9.5px}
+  .text-btn{font-size:10px}
+
+  .transaction-item{grid-template-columns:36px minmax(0,1fr);gap:9px;padding:10px 0}
+  .tx-icon{width:36px;height:36px;border-radius:11px}
+  .tx-icon svg{width:15px;height:15px}
+  .tx-main strong{font-size:11.5px}
+  .tx-main span{font-size:9px;margin-top:2px}
+  .tx-amount{font-size:11px;margin-top:2px}
+
+  .toolbar{gap:8px;margin-bottom:11px}
+  .toolbar input,.toolbar select{height:38px;padding:8px 10px;border-radius:11px;font-size:11px}
+  .table-wrap{margin:0 -2px}
+  table{min-width:590px}
+  th,td{padding:10px 8px;font-size:10.5px}
+  th{font-size:8.5px}
+  .badge{padding:5px 7px;font-size:8.5px}
+  .icon-action{padding:6px 7px;border-radius:9px}
+
+  .summary-card{padding:16px;border-radius:20px}
+  .summary-card span{font-size:10px}
+  .summary-card h3{font-size:19px;margin-top:7px}
+
+  .modal{padding:10px;align-items:end}
+  .modal-card{width:100%;max-height:92vh;overflow:auto;border-radius:24px 24px 16px 16px;padding:17px}
+  .modal-head{margin-bottom:13px}
+  .modal-head h2{font-size:18px}
+  .icon-btn{width:32px;height:32px;border-radius:10px}
+  .type-toggle{gap:5px;padding:5px;border-radius:14px;margin-bottom:13px}
+  .type-toggle span{padding:8px 6px;border-radius:10px;font-size:10.5px}
+  .form-grid{gap:10px}
+  .field{gap:5px}
+  .field>span{font-size:9.5px}
+  .field input,.field select{padding:9px 10px;border-radius:11px;font-size:11px}
+  .currency-input{border-radius:11px;padding-left:10px}
+  .form-actions{margin-top:15px;gap:7px}
+  .form-actions button{padding:9px 12px;font-size:11px;border-radius:11px}
+
+  .dream-section{margin-bottom:14px;padding:12px;border-radius:20px}
+  .dream-head{grid-template-columns:1fr;gap:12px}
+  .dream-total{min-height:108px;padding:16px;border-radius:17px}
+  .dream-kicker{font-size:7.5px}
+  .dream-total h3{font-size:24px;margin:8px 0 4px}
+  .dream-total p{font-size:9px}
+  .dream-list-top{margin-bottom:8px}
+  .dream-list-top h3{font-size:13px}
+  .dream-add{padding:7px 9px;border-radius:10px;font-size:9.5px}
+  .wishlist-list{display:flex;overflow-x:auto;gap:8px;padding-bottom:2px;scrollbar-width:none}
+  .wishlist-list::-webkit-scrollbar{display:none}
+  .wish-card{flex:0 0 150px;padding:12px 35px 12px 12px;border-radius:15px}
+  .wish-card strong{font-size:10px}
+  .wish-card span{font-size:10.5px;margin-top:4px}
+  .wish-delete{width:25px;height:25px;right:7px}
+  .wishlist-empty{flex:1 0 100%;min-height:74px;border-radius:15px;font-size:9.5px}
+}
+
+@media(max-width:390px){
+  .main-content{padding-left:7px;padding-right:7px}
+  .nav-item{padding:7px 8px;font-size:10px}
+  .balance-hero{padding:22px 17px 29px;border-radius:22px}
+  .balance-hero h2{font-size:32px}
+  .flow-grid{width:calc(100% - 12px)}
+  .flow-card{padding:12px 13px}
+  .flow-card h3{font-size:17px}
+  .panel{padding:13px;border-radius:18px}
+}
+
+
+@media(max-width:600px){
+  .dream-section{margin-top:18px}
+  .dream-head.wish-fund-layout{grid-template-columns:1fr!important}
+  .wish-fund-summary{padding:16px!important}
+  .wish-fund-summary h3{font-size:24px!important}
+  .wish-progress-meta{font-size:8.5px}
+  .wishlist-list{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important;overflow:visible!important}
+  .wish-card{min-width:0!important;padding:12px!important}
+  .wish-card strong{font-size:10.5px!important}
+  .wish-card span{font-size:11px!important}
+  .wish-card-actions{gap:5px;margin-top:9px}
+  .wish-buy{font-size:8px;padding:0 6px;height:28px}
+  .wish-delete{width:28px;height:28px}
+  .wishlist-subtitle{font-size:8.5px}
+}
+
+/* Wish Fund summary on Dashboard, detailed Wishlist on its own tab */
+.wish-fund-dashboard{padding:0;background:transparent;border:0;box-shadow:none}
+.wish-fund-dashboard .wish-fund-only{width:100%;padding:27px 30px;border-radius:28px;background:linear-gradient(135deg,rgba(255,247,251,.98),rgba(249,223,235,.86));border:1px solid #eac5d7;box-shadow:0 18px 46px rgba(118,62,90,.08),inset 0 1px 0 rgba(255,255,255,.9)}
+.wish-fund-dashboard .wish-fund-only h3{font-size:30px}
+.wishlist-page{padding:27px}
+.wishlist-page-head{margin-bottom:20px}
+.wishlist-page-head h3{font-size:20px;margin:0;color:#5b404d;letter-spacing:-.03em}
+.wishlist-page-list{grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.wishlist-page-list .wish-card{min-height:118px;display:flex;flex-direction:column;justify-content:space-between;padding:17px!important}
+@media(max-width:900px){.wishlist-page-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){
+  .wish-fund-dashboard .wish-fund-only{padding:18px;border-radius:20px}
+  .wish-fund-dashboard .wish-fund-only h3{font-size:23px}
+  .wishlist-page{padding:15px}
+  .wishlist-page-head{align-items:flex-start}
+  .wishlist-page-head .dream-add{padding:8px 10px;white-space:nowrap}
+  .wishlist-page-list{grid-template-columns:1fr;gap:9px;overflow:visible}
+  .wishlist-page-list .wish-card{min-width:0;width:100%;min-height:0;padding:14px!important}
+}
+
+
+/* interaction + period refinements */
+.transaction-context{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;padding:12px 14px;border:1px solid #efd7e2;border-radius:16px;background:linear-gradient(145deg,rgba(255,252,254,.92),rgba(250,232,241,.62))}
+.transaction-context span{font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#a1788d}
+.transaction-context strong{font-size:12px;color:#684a59}
+.wishlist-group-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin:19px 2px 10px}
+.wishlist-group-head span{font-size:11px;font-weight:850;color:#664856}
+.wishlist-group-head small{font-size:9px;color:#a27c8f}
+.purchased-head{margin-top:24px}
+.purchased-list .wish-card{opacity:.78;background:rgba(252,247,250,.9)}
+.purchased-list .wish-card strong{text-decoration:none}
+.purchased-badge{display:inline-flex!important;width:max-content;margin-top:8px!important;padding:5px 7px;border-radius:999px;background:#f5dfeb;color:#865e72!important;font-size:7.5px!important;font-weight:850!important;letter-spacing:.06em;text-transform:uppercase}
+.wish-edit{width:30px;height:30px;border:1px solid #ecd4df;border-radius:10px;background:#fff7fb;color:#8e6679;display:inline-grid;place-items:center}
+.wish-edit svg{width:13px;height:13px}
+.confirm-modal{z-index:90}
+.confirm-card{width:min(410px,100%);text-align:center;padding:28px 26px}
+.confirm-icon{width:48px;height:48px;margin:0 auto 15px;border-radius:16px;display:grid;place-items:center;background:#f9e1ec;border:1px solid #edc6d8;color:#81596d}
+.confirm-icon svg{width:21px;height:21px}
+.confirm-copy .eyebrow{margin-bottom:7px}.confirm-copy h2{margin-bottom:9px;color:#5a3f4c}.confirm-copy p:last-child{margin:0 auto;max-width:310px;color:#8b6879;font-size:11px;line-height:1.65}
+.confirm-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:22px}
+.confirm-actions button{width:100%}
+
+/* Keep the mobile composition close to desktop, only scale it down. */
+@media(max-width:680px){
+  .main-content{padding:18px 9px 30px!important}
+  .topbar{margin-bottom:13px!important}
+  .topbar-actions{gap:6px!important}
+  .topbar-actions select{height:36px!important;padding:7px 8px!important;font-size:10px!important}
+  .topbar-actions .primary-btn{min-height:37px!important;padding:8px 10px!important;font-size:10px!important}
+  .balance-hero{min-height:180px!important;padding:21px 18px 27px!important;border-radius:22px!important}
+  .balance-main{min-height:126px!important}
+  .balance-hero h2{font-size:31px!important;margin:10px 0 8px!important}
+  .balance-hero small{font-size:9px!important;line-height:1.45!important}
+  .flow-grid{width:calc(100% - 8px)!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px!important;margin:-18px auto 16px!important}
+  .flow-card{min-height:74px!important;padding:10px!important;border-radius:16px!important;gap:7px!important}
+  .flow-icon{width:28px!important;height:28px!important;border-radius:9px!important}
+  .flow-icon svg{width:12px!important;height:12px!important}
+  .flow-card span{font-size:6.5px!important;letter-spacing:.07em!important;line-height:1.25!important}
+  .flow-card h3{font-size:14px!important;margin-top:3px!important;letter-spacing:-.035em!important}
+  .wish-fund-dashboard .wish-fund-only{padding:14px!important;border-radius:18px!important}
+  .wish-fund-dashboard .wish-fund-only h3{font-size:21px!important;margin:6px 0!important}
+  .wish-percent{font-size:9px!important;padding:4px 6px!important}
+  .wish-fund-caption,.wish-fund-note{font-size:8px!important;line-height:1.4!important}
+  .wish-progress{height:7px!important}.wish-progress-meta{font-size:7.5px!important;margin-top:6px!important}
+  .panel{padding:13px!important;border-radius:18px!important}
+  .panel-head{margin-bottom:10px!important}.panel-head h3{font-size:13px!important}.panel-head p{font-size:8.5px!important}
+  .transaction-item{grid-template-columns:32px minmax(0,1fr) auto!important;align-items:center!important;gap:8px!important;padding:8px 0!important}
+  .tx-icon{width:32px!important;height:32px!important;border-radius:10px!important}.tx-icon svg{width:13px!important;height:13px!important}
+  .tx-main strong{font-size:10.5px!important}.tx-main span{font-size:8px!important}.tx-amount{grid-column:auto!important;justify-self:end!important;font-size:9.5px!important;margin:0!important}
+  .wishlist-page{padding:13px!important}.wishlist-page-head{margin-bottom:12px!important}.wishlist-page-head h3{font-size:16px!important}.wishlist-subtitle{font-size:8px!important}
+  .wishlist-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px!important;margin-bottom:8px!important}
+  .wishlist-stat{padding:10px 9px!important;border-radius:14px!important}.wishlist-stat-label{font-size:6.5px!important;margin-bottom:4px!important}.wishlist-stat strong{font-size:14px!important}.wishlist-stat.money strong{font-size:11px!important}
+  .wishlist-page-list{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px!important;overflow:visible!important}
+  .wishlist-page-list .wish-card{min-width:0!important;width:auto!important;min-height:82px!important;padding:10px!important;border-radius:14px!important}
+  .wish-card strong{font-size:9.5px!important}.wish-card span{font-size:10px!important;margin-top:3px!important}.wish-card-actions{gap:4px!important;margin-top:7px!important}
+  .wish-buy{height:25px!important;padding:0 5px!important;font-size:7px!important}.wish-edit,.wish-delete{width:25px!important;height:25px!important;border-radius:8px!important}.wish-edit svg,.wish-delete svg{width:11px!important;height:11px!important}
+  .wishlist-group-head{margin:14px 1px 7px!important}.wishlist-group-head span{font-size:9.5px!important}.wishlist-group-head small{font-size:7px!important}
+  .transaction-context{padding:9px 10px!important;border-radius:12px!important;margin-bottom:8px!important}.transaction-context span{font-size:7px!important}.transaction-context strong{font-size:9.5px!important}
+  .report-summary{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important}
+  .summary-card{padding:10px 8px!important;border-radius:14px!important}.summary-card span{font-size:7px!important;line-height:1.3!important}.summary-card h3{font-size:12px!important;margin-top:5px!important;white-space:normal!important;overflow:visible!important}
+  .modal{padding:8px!important}.modal-card{max-height:90vh!important;border-radius:21px!important;padding:15px!important}.modal-head h2{font-size:17px!important}
+  .confirm-card{padding:20px 16px!important}.confirm-icon{width:40px;height:40px;border-radius:13px;margin-bottom:11px}.confirm-copy p:last-child{font-size:9.5px}.confirm-actions{margin-top:16px;gap:7px}
+}
+@media(max-width:390px){
+  .flow-card{padding:9px 8px!important;gap:6px!important}.flow-icon{width:26px!important;height:26px!important}.flow-card h3{font-size:13px!important}
+  .nav-item{padding:6px 7px!important;font-size:9.5px!important}
+  .report-summary{gap:5px!important}.summary-card{padding:9px 6px!important}.summary-card h3{font-size:11px!important}
+}
+
+
+/* Store finance */
+.store-account-cell{display:flex;align-items:center;justify-content:space-between;gap:10px}.store-inline-actions{display:flex;gap:4px;opacity:.72}.store-account-cell:hover .store-inline-actions{opacity:1}
+.store-page{display:grid;gap:18px}.store-head-row{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;padding:0 4px}.store-head-row h3{margin:0 0 5px;font-size:22px;letter-spacing:-.035em;color:#5b404d}.store-subtitle{margin:0;color:var(--muted);font-size:11px}.store-add-btn{display:inline-flex;align-items:center;gap:8px}.store-add-btn svg{width:16px;height:16px}.store-profit-card{min-height:158px;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:28px 32px;border-radius:30px;background:linear-gradient(135deg,#f8cade 0%,#f5bdd5 50%,#f9dbe7 100%);border:1px solid rgba(226,160,190,.55);box-shadow:var(--shadow-lg),inset 0 1px 0 rgba(255,255,255,.78);overflow:hidden;position:relative}.store-profit-card:before{content:"";position:absolute;width:250px;height:250px;border-radius:50%;right:-70px;top:-125px;border:1px solid rgba(255,255,255,.48);box-shadow:0 0 0 36px rgba(255,255,255,.07),0 0 0 72px rgba(255,255,255,.035)}.store-profit-card>div{position:relative;z-index:2}.store-profit-label{display:block;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#86556d;font-weight:800}.store-profit-card h2{margin:10px 0 7px;font-size:38px;line-height:1;letter-spacing:-.055em;color:#4c2f3e}.store-profit-card p{margin:0;font-size:10px;color:#805a6d}.store-profit-icon{width:52px;height:52px;border-radius:17px;display:grid;place-items:center;background:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.6);color:#764c60}.store-profit-icon svg{width:22px;height:22px}.store-table-panel{margin-top:0}.store-table{min-width:980px}.store-table th,.store-table td{white-space:nowrap}.store-profit-positive{color:#7b4e64;font-weight:800}.store-profit-negative{color:#a85170;font-weight:800}.store-empty-note{padding:30px 14px;text-align:center;color:var(--muted)}.account-type-toggle{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:#f9e6ef;padding:5px;border-radius:14px;margin-bottom:16px;border:1px solid #ecc8d8}.account-type-toggle input{display:none}.account-type-toggle span{display:block;text-align:center;padding:9px 12px;border-radius:10px;font-size:11px;font-weight:750;color:#8c6b7a;cursor:pointer}.account-type-toggle input:checked+span{background:#fff;color:#6d495a;box-shadow:0 4px 12px rgba(127,71,99,.08)}.hidden-field{display:none!important}.field small{font-size:9px;font-weight:600;color:var(--muted)}.store-profit-preview{margin-top:17px;padding:15px 16px;border-radius:17px;background:#fbe8f1;border:1px solid #efcbdc;display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:center}.store-profit-preview span{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:#9a6b81;font-weight:800}.store-profit-preview strong{font-size:18px;color:#5f4351}.store-profit-preview small{grid-column:1/-1;font-size:9px;color:#9a7b89}.store-source-note{font-size:9px;color:#aa8697;margin-top:3px}.store-linked-lock{display:inline-flex;align-items:center;gap:4px;font-size:9px;color:#a38392}.store-linked-lock svg{width:11px;height:11px}
+
+.store-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-inline:contain;scrollbar-width:thin;padding-bottom:4px}
+.store-table{min-width:980px;width:100%}
+.store-scroll-hint{display:none;margin:0 0 9px;color:#a17b8e;font-size:9px}
+.store-mini-label{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.13em;color:#9a6b81;font-weight:800;margin:0 0 7px 2px}
+.store-status-wrap{margin-bottom:13px}
+.store-status-toggle{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:#f9e6ef;padding:5px;border-radius:14px;border:1px solid #ecc8d8}
+.store-status-toggle input{display:none}
+.store-status-toggle span{display:block;text-align:center;padding:8px 8px;border-radius:10px;font-size:10px;font-weight:750;color:#8c6b7a;cursor:pointer}
+.store-status-toggle input:checked+span{background:#fff;color:#6d495a;box-shadow:0 4px 12px rgba(127,71,99,.08)}
+.store-draft-note{margin:-2px 0 15px;padding:10px 12px;border-radius:13px;background:#fff8fb;border:1px solid #f0d8e3;color:#947183;font-size:9.5px;line-height:1.5}
+.store-status-badge{display:inline-flex;align-items:center;margin-top:4px;padding:3px 7px;border-radius:999px;font-size:8px;font-weight:800;letter-spacing:.02em;border:1px solid #edd0dd;background:#fbebf2;color:#926b7f}
+.store-status-badge.selling{background:#f8e1ed;color:#80586c}
+.store-status-badge.done{background:#f5d8e6;color:#744b5f}
+.store-cell-empty{color:#c0a4b1}
+.store-profit-pending{color:#a98a99;font-weight:700}
+@media(max-width:680px){.store-page{gap:12px}.store-head-row{align-items:flex-start;flex-direction:column;gap:10px}.store-head-row h3{font-size:17px}.store-subtitle{font-size:9px}.store-add-btn{width:100%;justify-content:center;min-height:38px;padding:9px 12px;border-radius:12px;font-size:10px}.store-profit-card{min-height:112px;padding:19px 20px;border-radius:22px}.store-profit-card h2{font-size:26px;margin:7px 0 5px}.store-profit-label{font-size:7.5px}.store-profit-card p{font-size:8.5px}.store-profit-icon{width:38px;height:38px;border-radius:13px}.store-profit-icon svg{width:17px;height:17px}.store-table-panel{padding:13px;border-radius:18px;overflow:hidden}.store-table-head{margin-bottom:6px}.store-scroll-hint{display:block}.store-table-wrap{margin:0 -13px;padding:0 13px 8px}.store-table{min-width:980px}.store-table th,.store-table td{padding:13px 10px;font-size:12px}.store-table th{font-size:9.5px}.store-modal-card{padding:17px;border-radius:21px}.account-type-toggle span{padding:8px 9px;font-size:10px}.store-status-toggle span{font-size:9px;padding:8px 5px}.store-profit-preview{padding:12px 13px;border-radius:14px}.store-profit-preview strong{font-size:15px}.store-form-grid{gap:10px}}
+
+@media(max-width:600px){
+  .store-table{min-width:980px!important}
+  .store-table th,.store-table td{padding:13px 10px!important;font-size:12px!important}
+  .store-table th{font-size:9.5px!important}
+  .store-table-wrap{overflow-x:auto!important;margin:0 -13px!important;padding:0 13px 8px!important}
+}
+
+/* Refined typography and compact mobile polish */
+h1,.brand strong{font-family:"DM Serif Display",Georgia,serif;font-weight:400;letter-spacing:-.025em}
+h1{font-size:33px}
+.brand strong{font-size:17px}
+.store-profit-card h2,.balance-hero h2,.wish-fund-dashboard .wish-fund-only h3{font-family:"Manrope",system-ui,sans-serif;font-weight:700}
+.store-head-actions{justify-content:flex-end;align-items:center;padding:0;margin-bottom:-2px}
+.store-head-actions .store-add-btn{margin-left:auto}
+
+@media(max-width:680px){
+  body{font-size:14px!important}
+  .main-content{padding:16px 10px 28px!important}
+  .topbar{margin-bottom:12px!important}
+  h1{font-size:25px!important}
+  .eyebrow{font-size:8.5px!important}
+  .brand strong{font-size:14px!important}
+  .nav-item{font-size:11px!important;padding:7px 9px!important}
+
+  .dashboard-stage{padding-bottom:0!important}
+  .balance-hero{min-height:176px!important;padding:21px 18px 25px!important}
+  .balance-main{min-height:120px!important}
+  .balance-label{font-size:8.5px!important}
+  .balance-hero h2{font-size:34px!important;margin:10px 0 0!important}
+  .flow-grid{margin:-17px auto 9px!important;gap:7px!important}
+  .flow-card{min-height:78px!important;padding:10px 11px!important;gap:8px!important}
+  .flow-icon{width:30px!important;height:30px!important}
+  .flow-card span{font-size:7.5px!important;line-height:1.3!important}
+  .flow-card h3{font-size:15px!important;margin-top:4px!important}
+
+  .dream-section.wish-fund-dashboard{margin-top:0!important;margin-bottom:10px!important}
+  .wish-fund-dashboard .wish-fund-only{padding:15px 16px!important;border-radius:18px!important}
+  .wish-fund-dashboard .wish-fund-only h3{font-size:23px!important;margin:7px 0 10px!important}
+  .dream-kicker{font-size:8.5px!important}
+  .wish-percent{font-size:10px!important}
+  .wish-progress{height:8px!important}
+  .wish-progress-meta{font-size:8.5px!important;margin-top:7px!important}
+
+  .panel{padding:14px!important}
+  .panel-head h3{font-size:14px!important}
+  .text-btn{font-size:10.5px!important}
+  .transaction-item{padding:9px 0!important}
+  .tx-main strong{font-size:11.5px!important}
+  .tx-main span{font-size:9px!important}
+  .tx-amount{font-size:10.5px!important}
+
+  .wishlist-page{padding:14px!important}
+  .wishlist-page-head h3{font-size:17px!important}
+  .wishlist-stat{padding:11px 10px!important}
+  .wishlist-stat-label{font-size:7.5px!important}
+  .wishlist-stat strong{font-size:15px!important}
+  .wishlist-stat.money strong{font-size:12px!important}
+  .wish-card strong{font-size:10.5px!important}
+  .wish-card span{font-size:11px!important}
+
+  .report-summary{gap:7px!important}
+  .summary-card{padding:11px 9px!important}
+  .summary-card span{font-size:7.7px!important}
+  .summary-card h3{font-size:13px!important}
+
+  .store-page{gap:10px!important}
+  .store-head-row.store-head-actions{display:flex!important;align-items:center!important;justify-content:flex-end!important;margin:0!important;padding:0 1px!important}
+  .store-head-actions .store-add-btn{width:auto!important;min-height:38px!important;padding:9px 13px!important;font-size:10.5px!important}
+  .store-profit-card{min-height:118px!important;padding:19px 20px!important}
+  .store-profit-label{font-size:8.5px!important}
+  .store-profit-card h2{font-size:28px!important}
+  .store-profit-card p{font-size:9.5px!important}
+  .store-table-panel{padding:14px!important}
+  .store-table-head h3{font-size:14px!important}
+  #storeTablePeriod{font-size:9.5px!important}
+  .store-table-wrap{margin:0 -14px!important;padding:0 14px 8px!important}
+  .store-table{min-width:980px!important}
+  .store-table th,.store-table td{font-size:12px!important;padding:13px 10px!important}
+  .store-table th{font-size:9.5px!important}
+}
+@media(max-width:390px){
+  h1{font-size:23px!important}
+  .nav-item{font-size:10.5px!important;padding:7px 7px!important}
+  .balance-hero h2{font-size:32px!important}
+  .flow-card h3{font-size:14px!important}
+}
+
+
+@media(max-width:600px){
+  .topbar-title-wrap{width:100%;align-items:center;gap:10px}
+  .store-top-add{padding:8px 10px!important;min-height:36px!important;border-radius:11px!important;font-size:10px!important;flex:0 0 auto}
+  .store-top-add svg{width:13px;height:13px}
+  #balanceValue{font-size:38px!important}
+  #incomeValue,#expenseValue{font-size:17px!important}
+  #dreamFundTotal{font-size:21px!important}
+  #storeMonthlyProfit{font-size:30px!important}
+}
+
+
+
+/* Wishlist financial overview */
+.wishlist-finance-stats{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+  margin:20px 0 24px;
+}
+.wishlist-finance-card{
+  min-height:112px;
+  padding:19px 20px;
+  border-radius:22px;
+  background:linear-gradient(145deg,rgba(255,252,254,.98),rgba(252,232,241,.78));
+  border:1px solid rgba(233,196,213,.92);
+  box-shadow:0 14px 34px rgba(112,62,87,.07),inset 0 1px 0 rgba(255,255,255,.9);
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+.wishlist-finance-card span{
+  font-size:10px;
+  letter-spacing:.04em;
+  color:#9b7487;
+  font-weight:700;
+}
+.wishlist-finance-card strong{
+  display:block;
+  margin-top:12px;
+  font-size:25px;
+  line-height:1;
+  color:#5f4050;
+}
+.wishlist-table-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin:2px 2px 12px;
+}
+.wishlist-table-head h4{
+  margin:0;
+  font-family:"DM Serif Display",Georgia,serif;
+  font-size:19px;
+  font-weight:400;
+  color:#5c3e4d;
+}
+.wishlist-table-wrap{
+  border:1px solid rgba(238,207,221,.92);
+  border-radius:20px;
+  background:rgba(255,253,254,.8);
+  overflow:auto;
+}
+.wishlist-table{
+  width:100%;
+  min-width:680px;
+  border-collapse:collapse;
+}
+.wishlist-table th,
+.wishlist-table td{
+  padding:14px 16px;
+  border-bottom:1px solid #f1dfe7;
+  vertical-align:middle;
+  font-size:12px;
+}
+.wishlist-table tbody tr:last-child td{border-bottom:0}
+.wishlist-table th{
+  font-size:9px;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+  color:#a17c8e;
+  font-weight:800;
+  background:rgba(250,235,242,.58);
+}
+.wishlist-item-name{
+  font-weight:700;
+  color:#634555;
+  font-size:12.5px;
+}
+.wishlist-status{
+  display:inline-flex;
+  align-items:center;
+  min-height:25px;
+  padding:5px 9px;
+  border-radius:999px;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.02em;
+  white-space:nowrap;
+}
+.wishlist-status.active{
+  color:#86576f;
+  background:#f9ddea;
+  border:1px solid #ecc3d5;
+}
+.wishlist-status.purchased{
+  color:#66846f;
+  background:#eaf5ee;
+  border:1px solid #d2e7d9;
+}
+.wishlist-row-actions{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:6px;
+  white-space:nowrap;
+}
+.wishlist-action{
+  width:31px;
+  height:31px;
+  border-radius:10px;
+  border:1px solid #efd2df;
+  background:#fff9fc;
+  color:#875d72;
+  display:inline-grid;
+  place-items:center;
+}
+.wishlist-action:hover{background:#fbe9f1}
+.wishlist-action svg{width:14px;height:14px}
+.wishlist-action.buy{
+  width:auto;
+  padding:0 10px;
+  gap:6px;
+  grid-auto-flow:column;
+  font-size:9px;
+  font-weight:800;
+}
+.wishlist-action.buy svg{width:13px;height:13px}
+.wishlist-empty-row td{
+  padding:30px 16px!important;
+  text-align:center;
+  color:#a27f90;
+  font-size:11px;
+}
+@media(max-width:680px){
+  .wishlist-finance-stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:14px 0 18px}
+  .wishlist-finance-card{min-height:82px;padding:12px 11px;border-radius:16px}
+  .wishlist-finance-card span{font-size:7.8px;line-height:1.25}
+  .wishlist-finance-card strong{font-size:17px;margin-top:8px}
+  .wishlist-table-head{margin-bottom:9px}
+  .wishlist-table-head h4{font-size:16px}
+  .wishlist-table-wrap{border-radius:16px}
+  .wishlist-table{min-width:620px}
+  .wishlist-table th,.wishlist-table td{padding:11px 12px;font-size:11px}
+  .wishlist-table th{font-size:8px}
+}
+
+/* Unified elegant numeric typography */
+#balanceValue,
+#incomeValue,
+#expenseValue,
+#dreamFundTotal,
+#wishFundTotal,
+#wishFundProgress,
+#wishFundPercent,
+#wishFundAvailable,
+#wishFundRemaining,
+#wishlistSpentTotal,
+#wishlistPurchasedValue,
+#wishlistTotalValue,
+#wishlistRemainingValue,
+#wishlistTotalCount,
+#wishlistBoughtCount,
+#wishlistPurchasedCount,
+#wishlistPendingCount,
+#wishlistActiveCount,
+#storeMonthlyProfit,
+#storeTotalRevenue,
+#storeTotalCost,
+#storePendingCount,
+#yearIncome,
+#yearExpense,
+#yearNet,
+.flow-card h3,
+.summary-card h3,
+.summary-card h2,
+.wish-summary-value,
+.wishlist-stat strong,
+.wish-card span,
+.wish-progress-meta,
+.tx-amount,
+.store-profit-card h2,
+.store-stat-value,
+.store-table td:nth-child(n+3),
+.store-profit-positive,
+.store-profit-negative,
+.store-profit-pending,
+.report-table td:not(:first-child),
+#monthlyReportBody td:not(:first-child),
+.store-profit-preview strong,
+.currency-input input,
+input[inputmode="numeric"]{
+  font-family:"DM Serif Display",Georgia,serif!important;
+  font-weight:400!important;
+  letter-spacing:-0.025em!important;
+  font-variant-numeric:lining-nums;
+}
+
+#balanceValue{
+  font-weight:400!important;
+  letter-spacing:-0.035em!important;
+}
+
+/* Keep small dates/labels readable while monetary and count values share the serif style. */
+.store-table td:first-child,
+#transactionTableBody td:first-child{
+  font-family:"Manrope",system-ui,sans-serif;
+  font-variant-numeric:tabular-nums;
+}
+
+
+/* Wishlist single-summary layout: keep hidden cards in DOM for script stability */
+#wishlistView .wishlist-finance-stats{grid-template-columns:minmax(0,1fr)!important;}
+#wishlistView .wishlist-hidden-summary{display:none!important;}
+#wishlistView .wishlist-finance-card{width:100%;}
+@media(max-width:680px){
+  #wishlistView .wishlist-finance-stats{grid-template-columns:1fr!important;}
+}
+
+
+
+/* Supabase auth */
+.auth-gate{position:fixed;inset:0;z-index:200;background:linear-gradient(180deg,rgba(255,247,252,.98),rgba(252,231,241,.98));display:grid;place-items:center;padding:20px;backdrop-filter:blur(18px)}
+.auth-gate.hidden{display:none}.auth-card{width:min(430px,100%);background:rgba(255,255,255,.92);border:1px solid #efd1df;border-radius:30px;padding:28px;box-shadow:0 28px 80px rgba(113,66,88,.16)}
+.auth-brand{display:flex;align-items:center;gap:12px;margin-bottom:24px}.auth-brand-mark{width:44px;height:44px;border-radius:15px;background:linear-gradient(145deg,#f9d3e3,#efabc8);border:1px solid #e3b4c9;display:grid;place-items:center;color:#815066}.auth-brand-mark svg{width:20px;height:20px}.auth-brand strong{display:block;font-size:20px;font-family:"DM Serif Display",Georgia,serif;font-weight:400;color:#5d3c4d}.auth-brand span{display:block;font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:#a07b8e;margin-top:2px}
+.auth-tabs{display:grid;grid-template-columns:1fr 1fr;background:#f9e9f1;border:1px solid #edd2df;border-radius:14px;padding:4px;gap:4px;margin-bottom:18px}.auth-tab{border:0;background:transparent;border-radius:10px;padding:10px;font-size:12px;font-weight:700;color:#987084}.auth-tab.active{background:#fff;color:#70485b;box-shadow:0 5px 15px rgba(100,54,78,.08)}
+.auth-form{display:grid;gap:12px}.auth-field{display:grid;gap:6px}.auth-field span{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#946d80}.auth-field input{width:100%;height:45px;border-radius:14px}.auth-submit{margin-top:5px;width:100%;height:46px}.auth-message{min-height:18px;margin:10px 0 0;font-size:11px;line-height:1.5;color:#9b6f84;text-align:center}.auth-message.error{color:#b34e72}.auth-message.success{color:#6e8d78}
+.sync-pill{position:fixed;right:16px;bottom:16px;z-index:90;background:rgba(255,255,255,.92);border:1px solid #ead1dd;border-radius:999px;padding:8px 12px;font-size:10px;color:#8b6879;box-shadow:0 10px 30px rgba(100,54,78,.08);display:flex;align-items:center;gap:7px;opacity:0;pointer-events:none;transform:translateY(8px);transition:.2s}.sync-pill.show{opacity:1;transform:none}.sync-dot{width:7px;height:7px;border-radius:50%;background:#d38bad}.sync-pill.ok .sync-dot{background:#75aa8a}.sync-pill.error .sync-dot{background:#cf6c81}
+.account-mini{position:fixed;left:16px;bottom:16px;z-index:85;border:1px solid #ead1dd;background:rgba(255,255,255,.9);border-radius:999px;padding:7px 10px;font-size:10px;color:#8d6b7b;display:none;gap:7px;align-items:center;box-shadow:0 10px 30px rgba(100,54,78,.07)}.account-mini.show{display:flex}.account-mini button{border:0;background:transparent;color:#ad6684;font-size:10px;font-weight:700;padding:2px 4px}
+@media(max-width:600px){.auth-card{padding:22px;border-radius:24px}.account-mini{left:8px;bottom:8px}.sync-pill{right:8px;bottom:8px}}
+
+</style>
+
+<style>
+.owner-only-tab{grid-template-columns:1fr!important}
+.owner-only-tab .auth-tab{width:100%}
+</style>
+</head>
+<body>
+  <div class="app-shell">
+    <div class="top-nav-wrap">
+      <header class="top-nav">
+        <div class="brand">
+          <div class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 7.5A2.5 2.5 0 0 1 6.5 5H18a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6.5A2.5 2.5 0 0 1 4 16.5v-9Z"/><path d="M4 8h14"/><path d="M16 12h4"/></svg></div>
+          <div class="brand-copy"><strong>My Finance</strong><span>Personal Ledger</span></div>
+        </div>
+
+        <nav class="nav-menu" aria-label="Navigasi utama">
+          <button class="nav-item active" data-view="dashboard">Dashboard</button>
+          <button class="nav-item" data-view="transactions">Transaksi</button>
+          <button class="nav-item" data-view="wishlist">Wishlist</button>
+          <button class="nav-item" data-view="store">Store</button>
+          <button class="nav-item" data-view="reports">Laporan</button>
+        </nav>
+      </header>
+    </div>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar-title-wrap">
+          <div><p class="eyebrow">PERSONAL FINANCE</p><h1 id="pageTitle">Dashboard</h1></div>
+          <button id="openStoreBtn" class="primary-btn store-top-add" type="button" style="display:none">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg><span>Tambah Penjualan</span>
+          </button>
+        </div>
+        <div class="topbar-actions">
+          <select id="monthFilter" aria-label="Pilih bulan"></select>
+          <select id="yearFilter" aria-label="Pilih tahun"></select>
+          <button id="openFormBtn" class="primary-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg><span>Tambah Transaksi</span></button>
+        </div>
+      </header>
+
+      <section id="dashboardView" class="view active">
+        <div class="dashboard-stage">
+          <article class="balance-hero">
+            <div class="balance-main">
+              <span class="balance-label">Saldo Saat Ini</span>
+              <h2 id="balanceValue">Rp0</h2>
+              
+            </div>
+          </article>
+
+          <div class="flow-grid">
+            <article class="flow-card">
+              <div class="flow-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M7 17 17 7"/><path d="M9 7h8v8"/></svg></div>
+              <div><span>Pemasukan Bulan Ini</span><h3 id="incomeValue">Rp0</h3></div>
+              
+            </article>
+            <article class="flow-card">
+              <div class="flow-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m7 7 10 10"/><path d="M17 9v8H9"/></svg></div>
+              <div><span>Pengeluaran Bulan Ini</span><h3 id="expenseValue">Rp0</h3></div>
+              
+            </article>
+          </div>
+        </div>
+        <section class="dream-section wish-fund-dashboard" aria-labelledby="wishFundTitle">
+          <div class="dream-total wish-fund-summary wish-fund-only">
+
+              <div class="wish-fund-topline">
+                <span class="dream-kicker" id="wishFundTitle">Wish Fund</span>
+                <span id="wishFundPercent" class="wish-percent">0%</span>
+              </div>
+              <h3 id="dreamFundTotal">Rp0</h3>
+              
+              <div class="wish-progress" aria-label="Progres Wish Fund">
+                <div id="wishProgressBar" class="wish-progress-fill"></div>
+              </div>
+              <div class="wish-progress-meta">
+                <span id="wishFundAvailable">Saldo tersedia Rp0</span>
+                <span id="wishFundRemaining">Kurang Rp0</span>
+              </div>
+              
+            
+          </div>
+        </section>
+
+        <section class="panel latest-panel">
+          <div class="panel-head">
+            <div><h3>Transaksi Terbaru</h3></div>
+            <button class="text-btn" data-jump="transactions">Lihat semua</button>
+          </div>
+          <div id="latestTransactions" class="transaction-list"></div>
+        </section>
+      </section>
+
+
+      <section id="wishlistView" class="view">
+        <section class="panel wishlist-page">
+          <div class="dream-list-top wishlist-page-head">
+            <div>
+              <p class="eyebrow">WISH FUND</p>
+              <h3>Wishlist</h3>
+            </div>
+            <button id="openWishlistBtn" class="dream-add" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>
+              <span>Tambah Wishlist</span>
+            </button>
+          </div>
+
+          <div class="wishlist-finance-stats" aria-label="Ringkasan nilai wishlist">
+            <article class="wishlist-finance-card">
+              <span>Total Wishlist</span>
+              <strong id="wishlistTotalValue">Rp0</strong>
+            </article>
+            <article class="wishlist-finance-card wishlist-hidden-summary">
+              <span>Sudah Dibeli</span>
+              <strong id="wishlistPurchasedValue">Rp0</strong>
+            </article>
+            <article class="wishlist-finance-card wishlist-hidden-summary">
+              <span>Sisa Wishlist</span>
+              <strong id="wishlistRemainingValue">Rp0</strong>
+            </article>
+          </div>
+
+          <div class="wishlist-table-head">
+            <h4>Wishlist Overview</h4>
+          </div>
+          <div class="table-wrap wishlist-table-wrap">
+            <table class="wishlist-table">
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th class="text-right">Harga</th>
+                  <th>Status</th>
+                  <th>Tanggal</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="wishlistTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <section id="transactionsView" class="view">
+        <section class="panel">
+          <div class="transaction-context">
+            <span>Periode transaksi</span>
+            <strong id="transactionPeriodLabel">Bulan berjalan</strong>
+          </div>
+          <div class="toolbar">
+            <div class="search-wrap"><input id="searchInput" type="search" placeholder="Cari keterangan transaksi..." /></div>
+            <select id="typeFilter"><option value="all">Semua jenis</option><option value="income">Pemasukan</option><option value="expense">Pengeluaran</option></select>
+          </div>
+          <div class="table-wrap"><table><thead><tr><th>Date</th><th>Keterangan</th><th>Jenis</th><th class="text-right">Nominal</th><th></th></tr></thead><tbody id="transactionTableBody"></tbody></table></div>
+        </section>
+      </section>
+
+      <section id="storeView" class="view">
+        <section class="store-page">
+          <article class="store-profit-card">
+            <div>
+              <span class="store-profit-label">Monthly Net Profit</span>
+              <h2 id="storeMonthlyProfit">Rp0</h2>
+              <p id="storePeriodLabel">Bulan berjalan</p>
+            </div>
+            <div class="store-profit-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 16l5-5 4 4 7-8"/><path d="M15 7h5v5"/></svg>
+            </div>
+          </article>
+
+          <section class="panel store-table-panel">
+            <div class="panel-head store-table-head">
+              <div><h3>Sales Ledger</h3><p id="storeTablePeriod">Bulan berjalan</p></div>
+            </div>
+            
+            <div class="table-wrap store-table-wrap">
+              <table class="store-table">
+                <thead><tr>
+                  <th>Date</th>
+                  <th>Account</th>
+                  <th class="text-right">Robux</th>
+                  <th class="text-right">Buy Cost</th>
+                  <th class="text-right">Plus Fee</th>
+                  <th class="text-right">Sale Value</th>
+                  <th class="text-right">Net Profit</th>
+                </tr></thead>
+                <tbody id="storeTableBody"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+      </section>
+
+      </section>
+
+<section id="reportsView" class="view">
+        <div class="summary-grid report-summary">
+          <article class="summary-card"><span>Total Pemasukan Tahun</span><h3 id="yearIncome">Rp0</h3></article>
+          <article class="summary-card"><span>Total Pengeluaran Tahun</span><h3 id="yearExpense">Rp0</h3></article>
+          <article class="summary-card"><span>Selisih Tahunan</span><h3 id="yearNet">Rp0</h3></article>
+        </div>
+        <section class="panel">
+          <div class="panel-head"><div><h3>Laporan Bulanan</h3></div></div>
+          <div class="table-wrap"><table><thead><tr><th>Bulan</th><th class="text-right">Pemasukan</th><th class="text-right">Pengeluaran</th><th class="text-right">Selisih</th></tr></thead><tbody id="monthlyReportBody"></tbody></table></div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <div id="modal" class="modal hidden" aria-hidden="true">
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="formTitle">
+      <div class="modal-head">
+        <div>
+          <p class="eyebrow">TRANSAKSI</p>
+          <h2 id="formTitle">Tambah Transaksi</h2>
+        </div>
+        <button class="icon-btn" data-close-modal aria-label="Tutup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+      </div>
+
+      <form id="transactionForm">
+        <input type="hidden" id="transactionId" />
+        <div class="type-toggle">
+          <label><input type="radio" name="type" value="income" checked><span>+ Pemasukan</span></label>
+          <label><input type="radio" name="type" value="expense"><span>− Pengeluaran</span></label>
+        </div>
+
+        <div class="form-grid">
+          <label class="field full">
+            <span>Nominal</span>
+            <div class="currency-input"><span>Rp</span><input id="amount" inputmode="numeric" placeholder="0" required /></div>
+          </label>
+          <label class="field">
+            <span>Tanggal</span>
+            <input id="date" type="date" required />
+          </label>
+          <label class="field full">
+            <span>Keterangan</span>
+            <input id="note" type="text" maxlength="100" placeholder="Contoh: Gaji Oktober" />
+          </label>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="secondary-btn" data-close-modal>Batal</button>
+          <button type="submit" class="primary-btn">Simpan Transaksi</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="wishlistModal" class="modal hidden wishlist-modal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-wishlist></div>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="wishlistFormTitle">
+      <div class="modal-head">
+        <div><p class="eyebrow">WISH FUND</p><h2 id="wishlistFormTitle">Tambah Wishlist</h2></div>
+        <button class="icon-btn" type="button" data-close-wishlist aria-label="Tutup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+      </div>
+      <form id="wishlistForm"><input type="hidden" id="wishId" />
+        <div class="form-grid">
+          <label class="field full"><span>Nama wishlist</span><input id="wishName" type="text" maxlength="60" placeholder="Contoh: iPad, liburan, tas" required /></label>
+          <label class="field full"><span>Target dana</span><div class="currency-input"><span>Rp</span><input id="wishAmount" inputmode="numeric" placeholder="0" required /></div></label>
+        </div>
+        <div class="form-actions"><button type="button" class="secondary-btn" data-close-wishlist>Batal</button><button type="submit" id="wishlistSubmitBtn" class="primary-btn">Tambahkan ke Wish Fund</button></div>
+      </form>
+    </div>
+  </div>
+
+
+  <div id="storeModal" class="modal hidden store-modal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-store></div>
+    <div class="modal-card store-modal-card" role="dialog" aria-modal="true" aria-labelledby="storeFormTitle">
+      <div class="modal-head">
+        <div><p class="eyebrow">ROBLOX STORE</p><h2 id="storeFormTitle">New Store Entry</h2></div>
+        <button class="icon-btn" type="button" data-close-store aria-label="Tutup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+      </div>
+      <form id="storeForm">
+        <input type="hidden" id="storeId" />
+        <div class="account-type-toggle" aria-label="Jenis akun">
+          <label><input type="radio" name="accountType" value="old" checked><span>Existing Account</span></label>
+          <label><input type="radio" name="accountType" value="new"><span>New Account</span></label>
+        </div>
+        <div class="store-status-wrap">
+          <span class="store-mini-label">Status</span>
+          <div class="store-status-toggle" aria-label="Status penjualan">
+            <label><input type="radio" name="storeStatus" value="pending" checked><span>Pending</span></label>
+            <label><input type="radio" name="storeStatus" value="selling"><span>Proses Jual</span></label>
+            <label><input type="radio" name="storeStatus" value="done"><span>Selesai</span></label>
+          </div>
+        </div>
+        <div class="store-draft-note">Tanggal, nama akun, dan Plus Fee wajib diisi. Data lainnya boleh kamu lengkapi bertahap lalu edit lagi nanti.</div>
+        <div class="form-grid store-form-grid">
+          <label class="field"><span>Tanggal</span><input id="storeDate" type="date" required /></label>
+          <label class="field"><span>Nama akun</span><input id="storeAccountName" type="text" maxlength="60" placeholder="Contoh: NeyyiStore01" required /></label>
+          <label class="field"><span>Jumlah Robux <small>(boleh nanti)</small></span><input id="storeRobux" inputmode="numeric" placeholder="Kosongkan jika belum ada" /></label>
+          <label class="field"><span>Modal beli <small>(boleh nanti)</small></span><div class="currency-input"><span>Rp</span><input id="storeCapital" inputmode="numeric" placeholder="Kosongkan jika belum ada" /></div></label>
+          <label class="field"><span>Plus Fee <small>(wajib)</small></span><div class="currency-input"><span>Rp</span><input id="storePlusCost" inputmode="numeric" placeholder="Masukkan biaya plus" required /></div></label>
+          <label class="field"><span>Harga jual <small>(bisa diisi bertahap)</small></span><div class="currency-input"><span>Rp</span><input id="storeSalePrice" inputmode="numeric" placeholder="Isi total yang sudah terjual" /></div></label>
+          <label id="storeAccountCostField" class="field full store-account-cost-field hidden-field"><span>Account Cost <small>(opsional · hanya New Account)</small></span><div class="currency-input"><span>Rp</span><input id="storeAccountCost" inputmode="numeric" placeholder="Kosongkan jika tidak ada biaya akun" /></div></label>
+        </div>
+        <div class="store-profit-preview">
+          <span>Posisi saat ini</span>
+          <strong id="storeProfitPreview">Pending</strong>
+          <small>Sale Value yang sudah masuk − Buy Cost − Plus Fee − Account Cost. Account Cost hanya dihitung untuk New Account.</small>
+        </div>
+        <div class="form-actions"><button type="button" class="secondary-btn" data-close-store>Batal</button><button type="submit" class="primary-btn">Simpan Penjualan</button></div>
+      </form>
+    </div>
+  </div>
+
+  <div id="confirmModal" class="modal hidden confirm-modal" aria-hidden="true">
+    <div class="modal-backdrop" data-confirm-cancel></div>
+    <div class="modal-card confirm-card" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+      <div class="confirm-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 8v5"/><path d="M12 17h.01"/><path d="M10.3 3.7 2.7 17a2 2 0 0 0 1.7 3h15.2a2 2 0 0 0 1.7-3L13.7 3.7a2 2 0 0 0-3.4 0Z"/></svg></div>
+      <div class="confirm-copy">
+        <p class="eyebrow">KONFIRMASI</p>
+        <h2 id="confirmTitle">Konfirmasi</h2>
+        <p id="confirmMessage">Apakah kamu yakin?</p>
+      </div>
+      <div class="confirm-actions">
+        <button type="button" class="secondary-btn" data-confirm-cancel>Batal</button>
+        <button type="button" class="primary-btn" id="confirmActionBtn">Lanjutkan</button>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="authGate" class="auth-gate">
+    <div class="auth-card">
+      <div class="auth-brand">
+        <div class="auth-brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 7.5A2.5 2.5 0 0 1 6.5 5H18a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6.5A2.5 2.5 0 0 1 4 16.5v-9Z"/><path d="M4 8h14"/><path d="M16 12h4"/></svg></div>
+        <div><strong>Neyyi Finance</strong><span>secure cloud sync</span></div>
+      </div>
+      <div class="auth-tabs owner-only-tab">
+        <button id="authLoginTab" class="auth-tab active" type="button">Masuk Pemilik</button>
+      </div>
+      <form id="authForm" class="auth-form">
+        <label class="auth-field"><span>Email</span><input id="authEmail" type="email" autocomplete="email" required placeholder="nama@email.com"></label>
+        <label class="auth-field"><span>Password</span><input id="authPassword" type="password" autocomplete="current-password" required minlength="6" placeholder="Minimal 6 karakter"></label>
+        <button id="authSubmit" class="primary-btn auth-submit" type="submit">Masuk</button>
+      </form>
+      <p id="authMessage" class="auth-message">Akses khusus pemilik Neyyi Finance. Data tersimpan aman di Supabase dan sinkron antar perangkat.</p>
+    </div>
+  </div>
+  <div id="syncPill" class="sync-pill"><span class="sync-dot"></span><span id="syncText">Sinkronisasi...</span></div>
+  <div id="accountMini" class="account-mini"><span id="accountEmail"></span><button id="logoutBtn" type="button">Keluar</button></div>
+
+  <div id="toast" class="toast"></div>
+  <script>
+
+const STORAGE_KEY = 'myfinance.transactions.v1';
+const WISHLIST_KEY = 'myfinance.wishlist.v1';
+const STORE_KEY = 'myfinance.store.v1';
+const monthNames = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+
+const $ = (s) => document.querySelector(s);
+const $$ = (s) => [...document.querySelectorAll(s)];
+
+function makeId() {
+  if (window.crypto && typeof window.crypto.randomUUID === 'function') return window.crypto.randomUUID();
+  return 'id-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2,10);
+}
+function escapeHtml(value='') {
+  return String(value).replace(/[&<>'"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[ch]));
+}
+function currency(n) {
+  return new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',maximumFractionDigits:0}).format(Number(n)||0);
+}
+function formatDate(date) {
+  return new Intl.DateTimeFormat('id-ID',{day:'2-digit',month:'short',year:'numeric'}).format(new Date(date+'T00:00:00'));
+}
+function localDateISO(d=new Date()) {
+  const y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,'0'), day=String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`;
+}
+function selectedDefaultDate() {
+  const now = new Date();
+  if (state.year === now.getFullYear() && state.month === now.getMonth()) return localDateISO(now);
+  const maxDay = new Date(state.year, state.month + 1, 0).getDate();
+  const day = Math.min(now.getDate(), maxDay);
+  return `${state.year}-${String(state.month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+}
+function parseAmount(v) { return Number(String(v).replace(/\D/g,'')) || 0; }
+function signedCurrency(tx) { return `${tx.type === 'income' ? '+' : '−'} ${currency(tx.amount)}`; }
+
+function seedData() {
+  const now = new Date(), y=now.getFullYear(), m=String(now.getMonth()+1).padStart(2,'0');
+  return [
+    {id:makeId(),date:`${y}-${m}-01`,type:'income',amount:6500000,note:'Gaji bulanan'},
+    {id:makeId(),date:`${y}-${m}-03`,type:'expense',amount:85000,note:'Belanja makan'},
+    {id:makeId(),date:`${y}-${m}-05`,type:'expense',amount:150000,note:'Bensin'},
+    {id:makeId(),date:`${y}-${m}-08`,type:'income',amount:1200000,note:'Project freelance'},
+    {id:makeId(),date:`${y}-${m}-09`,type:'expense',amount:475000,note:'Internet dan listrik'}
+  ];
+}
+function clearLegacyLocalData() {
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(WISHLIST_KEY);
+    localStorage.removeItem(STORE_KEY);
+  } catch(_) {}
+}
+clearLegacyLocalData();
+
+function loadTransactions() { return []; }
+function loadWishlist() { return []; }
+function loadStore() { return []; }
+
+function saveTransactions(){ try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state.transactions));}catch(_){} }
+function saveWishlist(){ try{localStorage.setItem(WISHLIST_KEY,JSON.stringify(state.wishlist));}catch(_){} }
+function saveStore(){ try{localStorage.setItem(STORE_KEY,JSON.stringify(state.store));}catch(_){} }
+
+const state = {
+  transactions: loadTransactions(),
+  wishlist: loadWishlist(),
+  store: loadStore(),
+  robux: JSON.parse(localStorage.getItem('mf_robux')||'[]'),
+  month: new Date().getMonth(),
+  year: new Date().getFullYear(),
+  view: 'dashboard'
+};
+state.store = state.store.map(r => ({...r, status: ['pending','selling','done'].includes(r.status) ? r.status : ((Number(r.salePrice)||0) > 0 ? 'done' : 'pending')}));
+
+
+function monthTx(month=state.month,year=state.year){
+  return state.transactions.filter(t=>{ const d=new Date(t.date+'T00:00:00'); return d.getMonth()===month && d.getFullYear()===year; });
+}
+function totals(list){
+  return list.reduce((a,t)=>{ if(t.type==='income')a.income+=Number(t.amount)||0; else a.expense+=Number(t.amount)||0; return a; },{income:0,expense:0});
+}
+function allBalance(){ const t=totals(state.transactions); return t.income-t.expense; }
+
+function storeMonthRecords(month=state.month,year=state.year){
+  return state.store.filter(r=>{ const d=new Date(r.date+'T00:00:00'); return d.getMonth()===month && d.getFullYear()===year; });
+}
+function storeProfit(record){
+  return (Number(record.salePrice)||0) - (Number(record.capital)||0) - (Number(record.plusCost)||0) - (Number(record.accountCost)||0);
+}
+function storeStatusLabel(status){
+  return status==='done'?'Selesai':status==='selling'?'Proses Jual':'Pending';
+}
+function storeValue(value,kind='currency'){
+  const n=Number(value)||0;
+  if(!n) return '<span class="store-cell-empty">—</span>';
+  return kind==='number'?n.toLocaleString('id-ID'):currency(n);
+}
+function syncStoreTransactions(record){
+  state.transactions=state.transactions.filter(t=>t.storeId!==record.id);
+  const cost=(Number(record.capital)||0)+(Number(record.plusCost)||0)+(Number(record.accountCost)||0);
+  if(cost>0){
+    state.transactions.push({id:makeId(),date:record.date,type:'expense',amount:cost,note:`Store · Modal ${record.accountName}`,storeId:record.id,linkedSource:'store',storePart:'cost'});
+  }
+  if((Number(record.salePrice)||0)>0){
+    state.transactions.push({id:makeId(),date:record.date,type:'income',amount:Number(record.salePrice),note:`Store · Penjualan ${record.accountName}`,storeId:record.id,linkedSource:'store',storePart:'sale'});
+  }
+}
+function removeStoreTransactions(storeId){ state.transactions=state.transactions.filter(t=>t.storeId!==storeId); }
+
+function setupFilters(){
+  const monthFilter=$('#monthFilter'), yearFilter=$('#yearFilter');
+  monthFilter.innerHTML=monthNames.map((m,i)=>`<option value="${i}">${m}</option>`).join('');
+  const years=new Set([state.year]);
+  state.transactions.forEach(t=>years.add(new Date(t.date+'T00:00:00').getFullYear()));
+  state.store.forEach(r=>years.add(new Date(r.date+'T00:00:00').getFullYear()));
+  for(let y=state.year-3;y<=state.year+2;y++) years.add(y);
+  yearFilter.innerHTML=[...years].sort((a,b)=>b-a).map(y=>`<option value="${y}">${y}</option>`).join('');
+  monthFilter.value=String(state.month); yearFilter.value=String(state.year);
+}
+
+function renderSummary(){
+  const current=totals(monthTx());
+  $('#balanceValue').textContent=currency(allBalance());
+  $('#incomeValue').textContent=currency(current.income);
+  $('#expenseValue').textContent=currency(current.expense);
+}
+
+function renderWishlist(){
+  const active=state.wishlist.filter(w=>w.status!=='purchased');
+  const purchased=state.wishlist.filter(w=>w.status==='purchased');
+  const activeValue=active.reduce((s,w)=>s+(Number(w.amount)||0),0);
+  const purchasedValue=purchased.reduce((s,w)=>s+(Number(w.amount)||0),0);
+  const totalValue=activeValue+purchasedValue;
+  const available=Math.max(0,allBalance());
+  const progress=activeValue>0?Math.min(100,Math.max(0,(available/activeValue)*100)):0;
+  const remaining=Math.max(0,activeValue-available);
+
+  $('#dreamFundTotal').textContent=currency(activeValue);
+  $('#wishFundPercent').textContent=`${Math.round(progress)}%`;
+  $('#wishProgressBar').style.width=`${progress}%`;
+  $('#wishFundAvailable').textContent=`Saldo tersedia ${currency(available)}`;
+  $('#wishFundRemaining').textContent=activeValue===0?'Belum ada target':remaining>0?`Kurang ${currency(remaining)}`:'Dana sudah mencukupi';
+
+  const totalValueEl=$('#wishlistTotalValue');
+  const purchasedValueEl=$('#wishlistPurchasedValue');
+  const remainingValueEl=$('#wishlistRemainingValue');
+  if(totalValueEl) totalValueEl.textContent=currency(activeValue);
+  if(purchasedValueEl) purchasedValueEl.textContent=currency(purchasedValue);
+  if(remainingValueEl) remainingValueEl.textContent=currency(activeValue);
+
+  const rows=state.wishlist.slice().sort((a,b)=>{
+    const aPurchased=a.status==='purchased';
+    const bPurchased=b.status==='purchased';
+    if(aPurchased!==bPurchased) return aPurchased?1:-1;
+    const ad=aPurchased?(a.purchasedAt||''):(a.createdAt||'');
+    const bd=bPurchased?(b.purchasedAt||''):(b.createdAt||'');
+    return bd.localeCompare(ad);
+  });
+
+  const body=$('#wishlistTableBody');
+  if(body){
+    body.innerHTML=rows.length?rows.map(item=>{
+      const isPurchased=item.status==='purchased';
+      const dateLabel=isPurchased&&item.purchasedAt?formatDate(item.purchasedAt):'—';
+      const actions=isPurchased?'':`
+        <div class="wishlist-row-actions">
+          <button class="wishlist-action buy" type="button" data-wish-buy="${item.id}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 12.5 9.2 17 19 7"/></svg><span>Beli</span></button>
+          <button class="wishlist-action" type="button" data-wish-edit="${item.id}" aria-label="Edit wishlist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"/></svg></button>
+          <button class="wishlist-action" type="button" data-wish-delete="${item.id}" aria-label="Hapus wishlist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 7h16M9 7V4h6v3M8 11v6M12 11v6M16 11v6M6 7l1 14h10l1-14"/></svg></button>
+        </div>`;
+      return `<tr>
+        <td><span class="wishlist-item-name">${escapeHtml(item.name)}</span></td>
+        <td class="text-right">${currency(item.amount)}</td>
+        <td><span class="wishlist-status ${isPurchased?'purchased':'active'}">${isPurchased?'Sudah Dibeli':'Aktif'}</span></td>
+        <td>${dateLabel}</td>
+        <td>${actions}</td>
+      </tr>`;
+    }).join(''):'<tr class="wishlist-empty-row"><td colspan="5">Belum ada wishlist. Tambahkan item pertama kamu.</td></tr>';
+  }
+}
+function txIcon(type){
+  return type==='income'?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M7 17 17 7"/><path d="M9 7h8v8"/></svg>':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m7 7 10 10"/><path d="M17 9v8H9"/></svg>';
+}
+function renderLatest(){
+  const list=monthTx().slice().sort((a,b)=>b.date.localeCompare(a.date)).slice(0,6);
+  $('#latestTransactions').innerHTML=list.length?list.map(tx=>`
+    <div class="transaction-item"><div class="tx-icon">${txIcon(tx.type)}</div><div class="tx-main"><strong>${escapeHtml(tx.note|| (tx.type==='income'?'Pemasukan':'Pengeluaran'))}</strong><span>${formatDate(tx.date)}</span></div><div class="tx-amount ${tx.type==='income'?'amount-income':'amount-expense'}">${signedCurrency(tx)}</div></div>`).join(''):'<div class="empty-state">Belum ada transaksi pada periode ini.</div>';
+}
+function renderTransactionTable(){
+  const period=$('#transactionPeriodLabel'); if(period) period.textContent=`${monthNames[state.month]} ${state.year}`;
+  const q=($('#searchInput').value||'').trim().toLowerCase();
+  const type=$('#typeFilter').value;
+  const list=monthTx().filter(t=>(type==='all'||t.type===type)&&(!q||(t.note||'').toLowerCase().includes(q))).sort((a,b)=>b.date.localeCompare(a.date));
+  $('#transactionTableBody').innerHTML=list.length?list.map(tx=>`
+    <tr>
+      <td>${formatDate(tx.date)}</td><td>${escapeHtml(tx.note||'-')}</td>
+      <td><span class="badge ${tx.type}">${tx.type==='income'?'Pemasukan':'Pengeluaran'}</span></td>
+      <td class="text-right ${tx.type==='income'?'amount-income':'amount-expense'}">${signedCurrency(tx)}</td>
+      <td>${tx.linkedSource==='store'?'<span class="store-linked-lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>Store</span>':`<div class="row-actions"><button class="icon-action" data-edit="${tx.id}" aria-label="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"/></svg></button><button class="icon-action" data-delete="${tx.id}" aria-label="Hapus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 7h16M9 7V4h6v3M8 11v6M12 11v6M16 11v6M6 7l1 14h10l1-14"/></svg></button></div>`}</td>
+    </tr>`).join(''):'<tr><td colspan="5"><div class="empty-state">Tidak ada transaksi pada periode ini.</div></td></tr>';
+}
+function renderStore(){
+  const list=storeMonthRecords().slice().sort((a,b)=>b.date.localeCompare(a.date));
+  const monthlyProfit=list.filter(r=>(r.status||'pending')==='done').reduce((s,r)=>s+storeProfit(r),0);
+  $('#storeMonthlyProfit').textContent=currency(monthlyProfit);
+  $('#storeMonthlyProfit').className=monthlyProfit<0?'store-profit-negative':'store-profit-positive';
+  $('#storePeriodLabel').textContent=`${monthNames[state.month]} ${state.year}`;
+  $('#storeTablePeriod').textContent=`${monthNames[state.month]} ${state.year}`;
+  $('#storePeriodLabel').textContent=`${monthNames[state.month]} ${state.year}`;
+  $('#storeTableBody').innerHTML=list.length?list.map(r=>{
+    const profit=storeProfit(r);
+    const status=r.status||'pending';
+    const profitHtml=status==='done'
+      ? `<span class="${profit<0?'store-profit-negative':'store-profit-positive'}">${currency(profit)}</span>`
+      : `<span class="store-profit-pending">${Number(r.salePrice||0)||Number(r.capital||0)||Number(r.plusCost||0)||Number(r.accountCost||0)?currency(profit):'—'}</span>`;
+    return `<tr>
+      <td>${formatDate(r.date)}</td>
+      <td><div class="store-account-cell"><div><strong>${escapeHtml(r.accountName)}</strong>${r.accountType==='new'?`<div class="store-source-note">New Account${Number(r.accountCost||0)?` · Account Cost ${currency(r.accountCost)}`:' · Account Cost opsional'}</div>`:'<div class="store-source-note">Existing Account</div>'}<span class="store-status-badge ${status}">${storeStatusLabel(status)}</span></div><div class="store-inline-actions"><button class="icon-action" data-store-edit="${r.id}" aria-label="Edit penjualan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"/></svg></button><button class="icon-action" data-store-delete="${r.id}" aria-label="Hapus penjualan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 7h16M9 7V4h6v3M8 11v6M12 11v6M16 11v6M6 7l1 14h10l1-14"/></svg></button></div></div></td>
+      <td class="text-right">${storeValue(r.robux,'number')}</td>
+      <td class="text-right">${storeValue(r.capital)}</td>
+      <td class="text-right">${storeValue(r.plusCost)}</td>
+      <td class="text-right">${storeValue(r.salePrice)}</td>
+      <td class="text-right">${profitHtml}</td>
+    </tr>`;
+  }).join(''):'<tr><td colspan="7"><div class="store-empty-note">Belum ada penjualan store pada periode ini.</div></td></tr>';
+}
+
+function renderReports(){
+  let yi=0,ye=0;
+  const rows=monthNames.map((m,i)=>{ const t=totals(monthTx(i,state.year)); yi+=t.income; ye+=t.expense; return {month:m,...t,net:t.income-t.expense}; });
+  $('#yearIncome').textContent=currency(yi); $('#yearExpense').textContent=currency(ye); $('#yearNet').textContent=currency(yi-ye);
+  $('#monthlyReportBody').innerHTML=rows.map(r=>`<tr><td>${r.month}</td><td class="text-right amount-income">${currency(r.income)}</td><td class="text-right amount-expense">${currency(r.expense)}</td><td class="text-right">${currency(r.net)}</td></tr>`).join('');
+}
+function render(){ renderSummary(); renderWishlist(); renderLatest(); renderTransactionTable(); renderStore(); renderReports(); }
+
+function toast(msg){ const el=$('#toast'); el.textContent=msg; el.classList.add('show'); clearTimeout(window.__toastTimer); window.__toastTimer=setTimeout(()=>el.classList.remove('show'),2200); }
+
+function openModal(tx=null){
+  $('#modal').classList.remove('hidden'); $('#modal').setAttribute('aria-hidden','false'); $('#transactionForm').reset(); $('#transactionId').value='';
+  document.querySelector('input[name="type"][value="income"]').checked=true; $('#date').value=selectedDefaultDate(); $('#formTitle').textContent='Tambah Transaksi';
+  if(tx){ $('#transactionId').value=tx.id; document.querySelector(`input[name="type"][value="${tx.type}"]`).checked=true; $('#amount').value=Number(tx.amount).toLocaleString('id-ID'); $('#date').value=tx.date; $('#note').value=tx.note||''; $('#formTitle').textContent='Edit Transaksi'; }
+  setTimeout(()=>$('#amount').focus(),30);
+}
+function closeModal(){ $('#modal').classList.add('hidden'); $('#modal').setAttribute('aria-hidden','true'); }
+function openWishlistModal(item=null){
+  $('#wishlistModal').classList.remove('hidden'); $('#wishlistModal').setAttribute('aria-hidden','false'); $('#wishlistForm').reset(); $('#wishId').value=''; $('#wishlistFormTitle').textContent='Tambah Wishlist'; $('#wishlistSubmitBtn').textContent='Tambahkan ke Wish Fund';
+  if(item){ $('#wishId').value=item.id; $('#wishName').value=item.name||''; $('#wishAmount').value=Number(item.amount).toLocaleString('id-ID'); $('#wishlistFormTitle').textContent='Edit Wishlist'; $('#wishlistSubmitBtn').textContent='Simpan Perubahan'; }
+  setTimeout(()=>$('#wishName').focus(),30);
+}
+function closeWishlistModal(){ $('#wishlistModal').classList.add('hidden'); $('#wishlistModal').setAttribute('aria-hidden','true'); }
+
+function updateStoreAccountCostVisibility(){
+  const type=document.querySelector('input[name="accountType"]:checked')?.value||'old';
+  const field=$('#storeAccountCostField');
+  if(type==='new') field.classList.remove('hidden-field');
+  else { field.classList.add('hidden-field'); $('#storeAccountCost').value=''; }
+  updateStoreProfitPreview();
+}
+function updateStoreProfitPreview(){
+  const sale=parseAmount($('#storeSalePrice')?.value||'0');
+  const capital=parseAmount($('#storeCapital')?.value||'0');
+  const plus=parseAmount($('#storePlusCost')?.value||'0');
+  const type=document.querySelector('input[name="accountType"]:checked')?.value||'old';
+  const status=document.querySelector('input[name="storeStatus"]:checked')?.value||'pending';
+  const account=type==='new'?parseAmount($('#storeAccountCost')?.value||'0'):0;
+  const profit=sale-capital-plus-account;
+  const hasValue=sale||capital||plus||account;
+  const el=$('#storeProfitPreview');
+  if(el){
+    el.textContent=hasValue?currency(profit):'Pending';
+    el.className=status==='done'?(profit<0?'store-profit-negative':'store-profit-positive'):'store-profit-pending';
+  }
+}
+function openStoreModal(item=null){
+  $('#storeModal').classList.remove('hidden'); $('#storeModal').setAttribute('aria-hidden','false'); $('#storeForm').reset(); $('#storeId').value=''; $('#storeFormTitle').textContent='New Store Entry';
+  document.querySelector('input[name="accountType"][value="old"]').checked=true; document.querySelector('input[name="storeStatus"][value="pending"]').checked=true; $('#storeDate').value=selectedDefaultDate();
+  if(item){
+    $('#storeId').value=item.id; $('#storeDate').value=item.date; $('#storeAccountName').value=item.accountName||''; $('#storeRobux').value=Number(item.robux||0)?Number(item.robux).toLocaleString('id-ID'):''; $('#storeCapital').value=Number(item.capital||0)?Number(item.capital).toLocaleString('id-ID'):''; $('#storePlusCost').value=Number(item.plusCost||0)?Number(item.plusCost).toLocaleString('id-ID'):''; $('#storeSalePrice').value=Number(item.salePrice||0)?Number(item.salePrice).toLocaleString('id-ID'):''; $('#storeAccountCost').value=Number(item.accountCost||0)?Number(item.accountCost).toLocaleString('id-ID'):'';
+    const type=item.accountType==='new'?'new':'old'; document.querySelector(`input[name="accountType"][value="${type}"]`).checked=true; const status=['pending','selling','done'].includes(item.status)?item.status:'pending'; document.querySelector(`input[name="storeStatus"][value="${status}"]`).checked=true; $('#storeFormTitle').textContent='Edit Store Entry';
+  }
+  updateStoreAccountCostVisibility(); updateStoreProfitPreview(); setTimeout(()=>$('#storeAccountName').focus(),30);
+}
+function closeStoreModal(){ $('#storeModal').classList.add('hidden'); $('#storeModal').setAttribute('aria-hidden','true'); }
+
+let confirmAction=null;
+function openConfirm(title,message,buttonText,action){
+  $('#confirmTitle').textContent=title; $('#confirmMessage').textContent=message; $('#confirmActionBtn').textContent=buttonText||'Lanjutkan'; confirmAction=action;
+  $('#confirmModal').classList.remove('hidden'); $('#confirmModal').setAttribute('aria-hidden','false');
+}
+function closeConfirm(run=false){
+  const action=confirmAction; confirmAction=null; $('#confirmModal').classList.add('hidden'); $('#confirmModal').setAttribute('aria-hidden','true');
+  if(run && typeof action==='function') action();
+}
+
+function switchView(view){
+  if(!document.getElementById(view+'View')) return;
+  state.view=view; $$('.view').forEach(v=>v.classList.remove('active')); $$('.nav-item').forEach(v=>v.classList.remove('active'));
+  $('#'+view+'View').classList.add('active'); document.querySelector(`.nav-item[data-view="${view}"]`)?.classList.add('active');
+  $('#pageTitle').textContent=view==='dashboard'?'Dashboard':view==='transactions'?'Riwayat Transaksi':view==='wishlist'?'Wishlist':view==='store'?'Neyyi Store':'Laporan Keuangan';
+  $('.topbar-actions').style.display=view==='dashboard'?'':'none';
+  const storeTopAdd=document.getElementById('openStoreBtn');
+  if(storeTopAdd) storeTopAdd.style.display=view==='store'?'inline-flex':'none';
+  if(view==='transactions') renderTransactionTable();
+}
+
+$('#openFormBtn').addEventListener('click',()=>openModal());
+$('#openWishlistBtn').addEventListener('click',()=>openWishlistModal());
+$('#openStoreBtn').addEventListener('click',()=>openStoreModal());
+$$('[data-close-modal]').forEach(el=>el.addEventListener('click',closeModal));
+$$('[data-close-wishlist]').forEach(el=>el.addEventListener('click',closeWishlistModal));
+$$('[data-close-store]').forEach(el=>el.addEventListener('click',closeStoreModal));
+$$('[data-confirm-cancel]').forEach(el=>el.addEventListener('click',()=>closeConfirm(false)));
+$('#confirmActionBtn').addEventListener('click',()=>closeConfirm(true));
+$$('.nav-item').forEach(btn=>btn.addEventListener('click',()=>switchView(btn.dataset.view)));
+$$('[data-jump]').forEach(btn=>btn.addEventListener('click',()=>switchView(btn.dataset.jump)));
+
+$('#monthFilter').addEventListener('change',e=>{ state.month=Number(e.target.value); render(); });
+$('#yearFilter').addEventListener('change',e=>{ state.year=Number(e.target.value); render(); });
+$('#searchInput').addEventListener('input',renderTransactionTable);
+$('#typeFilter').addEventListener('change',renderTransactionTable);
+$('#amount').addEventListener('input',e=>{ const n=parseAmount(e.target.value); e.target.value=n?n.toLocaleString('id-ID'):''; });
+$('#wishAmount').addEventListener('input',e=>{ const n=parseAmount(e.target.value); e.target.value=n?n.toLocaleString('id-ID'):''; });
+['storeRobux','storeCapital','storePlusCost','storeSalePrice','storeAccountCost'].forEach(id=>$('#'+id).addEventListener('input',e=>{ const n=parseAmount(e.target.value); e.target.value=n?n.toLocaleString('id-ID'):''; updateStoreProfitPreview(); }));
+$$('input[name="accountType"]').forEach(el=>el.addEventListener('change',updateStoreAccountCostVisibility));
+$$('input[name="storeStatus"]').forEach(el=>el.addEventListener('change',updateStoreProfitPreview));
+
+$('#transactionForm').addEventListener('submit',e=>{
+  e.preventDefault(); const id=$('#transactionId').value; const type=document.querySelector('input[name="type"]:checked').value; const amount=parseAmount($('#amount').value); const date=$('#date').value; const note=$('#note').value.trim();
+  if(!amount||!date) return toast('Lengkapi nominal dan tanggal transaksi.');
+  const tx={id:id||makeId(),type,amount,date,note};
+  state.transactions=id?state.transactions.map(t=>t.id===id?{...t,...tx}:t):[...state.transactions,tx];
+  saveTransactions(); setupFilters(); render(); closeModal(); toast(id?'Transaksi diperbarui.':'Transaksi ditambahkan.');
+});
+
+$('#storeForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const id=$('#storeId').value;
+  const accountType=document.querySelector('input[name="accountType"]:checked')?.value||'old';
+  const status=document.querySelector('input[name="storeStatus"]:checked')?.value||'pending';
+  const plusFeeRaw=$('#storePlusCost').value.trim();
+  const record={
+    id:id||makeId(), date:$('#storeDate').value, accountName:$('#storeAccountName').value.trim(), robux:parseAmount($('#storeRobux').value), capital:parseAmount($('#storeCapital').value), plusCost:parseAmount(plusFeeRaw), salePrice:parseAmount($('#storeSalePrice').value), accountType, accountCost:accountType==='new'?parseAmount($('#storeAccountCost').value):0, status
+  };
+  if(!record.date||!record.accountName) return toast('Tanggal dan nama akun tetap perlu diisi.');
+  if(!plusFeeRaw) return toast('Plus Fee wajib diisi.');
+  if(id) state.store=state.store.map(r=>r.id===id?record:r); else state.store.push(record);
+  syncStoreTransactions(record); saveStore(); saveTransactions(); setupFilters(); render(); closeStoreModal(); toast(id?'Data store diperbarui.':'Data store disimpan.');
+});
+
+$('#wishlistForm').addEventListener('submit',e=>{
+  e.preventDefault(); const id=$('#wishId').value; const name=$('#wishName').value.trim(); const amount=parseAmount($('#wishAmount').value);
+  if(!name||!amount) return toast('Lengkapi nama dan target dana wishlist.');
+  if(id){ state.wishlist=state.wishlist.map(w=>w.id===id?{...w,name,amount}:w); }
+  else { state.wishlist.push({id:makeId(),name,amount,status:'active',createdAt:localDateISO()}); }
+  saveWishlist(); renderWishlist(); closeWishlistModal(); toast(id?'Wishlist diperbarui.':'Wishlist ditambahkan.');
+});
+
+$('#wishlistTableBody').addEventListener('click',e=>{
+  const buy=e.target.closest('[data-wish-buy]'), edit=e.target.closest('[data-wish-edit]'), del=e.target.closest('[data-wish-delete]');
+  if(edit){ const item=state.wishlist.find(w=>w.id===edit.dataset.wishEdit); if(item) openWishlistModal(item); return; }
+  if(buy){
+    const item=state.wishlist.find(w=>w.id===buy.dataset.wishBuy && w.status!=='purchased'); if(!item) return;
+    const after=allBalance()-Number(item.amount||0); const warning=after<0?` Saldo setelah pembelian akan menjadi ${currency(after)}.`:'';
+    openConfirm('Tandai sudah dibeli?',`${item.name} senilai ${currency(item.amount)} akan dicatat sebagai pengeluaran dan baru saat ini saldo berkurang.${warning}`,'Sudah Dibeli',()=>{
+      const today=localDateISO(); state.transactions.push({id:makeId(),type:'expense',amount:Number(item.amount),date:today,note:`Wishlist dibeli: ${item.name}`,wishlistId:item.id});
+      state.wishlist=state.wishlist.map(w=>w.id===item.id?{...w,status:'purchased',purchasedAt:today}:w); saveTransactions(); saveWishlist(); setupFilters(); render(); toast('Pembelian dicatat dan saldo diperbarui.');
+    }); return;
+  }
+  if(del){ const item=state.wishlist.find(w=>w.id===del.dataset.wishDelete); if(!item)return; openConfirm('Hapus wishlist?',`${item.name} akan dihapus dari Wish Fund. Saldo tidak berubah.`,'Hapus',()=>{ state.wishlist=state.wishlist.filter(w=>w.id!==item.id); saveWishlist(); renderWishlist(); toast('Wishlist dihapus.'); }); }
+});
+
+$('#storeTableBody').addEventListener('click',e=>{
+  const edit=e.target.closest('[data-store-edit]'), del=e.target.closest('[data-store-delete]');
+  if(edit){ const item=state.store.find(r=>r.id===edit.dataset.storeEdit); if(item) openStoreModal(item); return; }
+  if(del){
+    const item=state.store.find(r=>r.id===del.dataset.storeDelete); if(!item) return;
+    openConfirm('Hapus penjualan store?',`${item.accountName} akan dihapus. Transaksi modal dan penjualannya juga akan dihapus dari saldo personal.`,'Hapus',()=>{
+      state.store=state.store.filter(r=>r.id!==item.id); removeStoreTransactions(item.id); saveStore(); saveTransactions(); setupFilters(); render(); toast('Penjualan store dihapus.');
+    });
+  }
+});
+
+$('#transactionTableBody').addEventListener('click',e=>{
+  const edit=e.target.closest('[data-edit]'), del=e.target.closest('[data-delete]');
+  if(edit){ const tx=state.transactions.find(t=>t.id===edit.dataset.edit); if(tx) openModal(tx); return; }
+  if(del){ const tx=state.transactions.find(t=>t.id===del.dataset.delete); if(!tx)return; openConfirm('Hapus transaksi?',`${tx.note||'Transaksi'} sebesar ${currency(tx.amount)} akan dihapus dan saldo otomatis dihitung ulang.`,'Hapus',()=>{ state.transactions=state.transactions.filter(t=>t.id!==tx.id); saveTransactions(); setupFilters(); render(); toast('Transaksi dihapus.'); }); }
+});
+
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ closeModal(); closeWishlistModal(); closeStoreModal(); closeConfirm(false); } });
+
+setupFilters(); render(); switchView('dashboard');
+
+
+const ROBUX_KEY='mf_robux';
+function saveRobux(){localStorage.setItem(ROBUX_KEY,JSON.stringify(state.robux)); if(typeof queueSync==='function') queueSync('robux');}
+function renderRobux(){const b=document.getElementById('robuxBody'); if(!b)return; b.innerHTML=state.robux.map(r=>`<tr><td>${r.name}</td><td>${r.amount}</td><td>${currency(r.buy_cost)}</td><td>${currency((r.sell_value||0)-(r.buy_cost||0))}</td><td><button class="robux-timeline-btn" onclick='openRobuxTimeline(${JSON.stringify(r).replaceAll("'","&apos;")})'>📅 Lihat</button></td><td>${r.status}</td></tr>`).join('')||'<tr><td colspan="6" class="empty-state">Belum ada Robux</td></tr>';}
+window.renderRobux=renderRobux;
+document.getElementById('addRobuxBtn')?.addEventListener('click',()=>{
+  const wrap=document.createElement('div');
+  wrap.className='modal';
+  wrap.id='robuxAddModal';
+  wrap.innerHTML=`<div class="modal-backdrop"></div><div class="modal-card">
+    <div class="modal-head"><h2>Tambah Robux</h2><button class="icon-btn" id="closeRobuxAdd">×</button></div>
+    <div class="form-grid">
+      <label class="field full"><span>Nama / Paket</span><input id="rbName" placeholder="Robux 1000"></label>
+      <label class="field"><span>Jumlah Robux</span><input id="rbAmount" type="number"></label>
+      <label class="field"><span>Modal Beli</span><input id="rbBuy" type="number"></label>
+      <label class="field"><span>Tanggal Beli</span><input id="rbBuyDate" type="date" value="${localDateISO()}"></label>
+      <label class="field"><span>Tanggal Jual (opsional)</span><input id="rbSellDate" type="date"></label>
+      <label class="field"><span>Harga Jual (opsional)</span><input id="rbSell" type="number"></label>
+    </div>
+    <div class="form-actions"><button class="secondary-btn" id="cancelRb">Batal</button><button class="primary-btn" id="saveRb">Simpan</button></div>
+  </div>`;
+  document.body.appendChild(wrap);
+  const close=()=>wrap.remove();
+  wrap.querySelector('.modal-backdrop').onclick=close;
+  wrap.querySelector('#closeRobuxAdd').onclick=close;
+  wrap.querySelector('#cancelRb').onclick=close;
+  wrap.querySelector('#saveRb').onclick=()=>{
+    const name=rbName.value.trim();
+    if(!name)return;
+    const sellDate=rbSellDate.value||null;
+    state.robux.push({
+      id:makeId(), name,
+      amount:Number(rbAmount.value)||0,
+      buy_cost:Number(rbBuy.value)||0,
+      buy_date:rbBuyDate.value||localDateISO(),
+      sell_date:sellDate,
+      sell_value:Number(rbSell.value)||0,
+      status:sellDate?'sold':'holding'
+    });
+    saveRobux();
+    close();
+  };
+});
+
+// Laporan Robux berdasarkan event: beli = pengeluaran, jual = pemasukan/profit
+window.getRobuxMonthlySummary=function(month){
+  const result={expense:0,income:0,profit:0};
+  state.robux.forEach(r=>{
+    if((r.buy_date||'').slice(0,7)===month) result.expense+=Number(r.buy_cost)||0;
+    if((r.sell_date||'').slice(0,7)===month){
+      result.income+=Number(r.sell_value)||0;
+      result.profit+=(Number(r.sell_value)||0)-(Number(r.buy_cost)||0);
+    }
+  });
+  return result;
+};
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.95.0/dist/umd/supabase.min.js"></script>
+<script>
+const SUPABASE_URL = 'https://qwxpgfkmgaiafllmxndm.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_koe1YZr2uKh8P2DwWwMvLg_8pGz0LA9';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+  auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+});
+let cloudUser = null;
+let syncTimers = {};
+let syncing = false;
+
+const originalSaveTransactions = saveTransactions;
+const originalSaveWishlist = saveWishlist;
+const originalSaveStore = saveStore;
+
+function syncStatus(message, kind='') {
+  const pill=document.getElementById('syncPill'), txt=document.getElementById('syncText');
+  if(!pill||!txt) return;
+  txt.textContent=message; pill.className='sync-pill show'+(kind?' '+kind:'');
+  clearTimeout(syncStatus._t); syncStatus._t=setTimeout(()=>pill.classList.remove('show'),1800);
+}
+function authMessage(message, kind='') {
+  const el=document.getElementById('authMessage'); if(!el)return;
+  el.textContent=message; el.className='auth-message'+(kind?' '+kind:'');
+}
+function mapTxToDb(t){ return { id:t.id, user_id:cloudUser.id, tx_date:t.date, type:t.type, amount:Number(t.amount)||0, note:t.note||'', source:(t.storeId||t.linkedSource==='store')?'store':'manual', source_ref:t.storeId||null, updated_at:new Date().toISOString() }; }
+function mapTxFromDb(r){ return { id:r.id, date:r.tx_date, type:r.type, amount:Number(r.amount)||0, note:r.note||'', ...(r.source==='store'?{linkedSource:'store',storeId:r.source_ref}: {}) }; }
+function mapWishToDb(w){ return { id:w.id, user_id:cloudUser.id, name:w.name, target_amount:Number(w.amount)||0, status:w.status==='purchased'?'purchased':'active', purchased_at:w.purchasedAt||null, updated_at:new Date().toISOString() }; }
+function mapWishFromDb(r){ return { id:r.id, name:r.name, amount:Number(r.target_amount)||0, status:r.status, purchasedAt:r.purchased_at||null, createdAt:(r.created_at||'').slice(0,10) }; }
+function mapRobuxToDb(r){ return { id:r.id, user_id:cloudUser.id, name:r.name||'', robux_amount:Number(r.amount)||0, buy_date:r.buy_date||null, sell_date:r.sell_date||null, buy_cost:Number(r.buy_cost)||0, sell_value:Number(r.sell_value)||0, status:r.status||'holding', updated_at:new Date().toISOString() }; }
+function mapRobuxFromDb(r){ return { id:r.id, name:r.name||'', amount:Number(r.robux_amount)||0, buy_date:r.buy_date||null, sell_date:r.sell_date||null, buy_cost:Number(r.buy_cost)||0, sell_value:Number(r.sell_value)||0, status:r.status||'holding' }; }
+function mapStoreToDb(r){ return { id:r.id, user_id:cloudUser.id, sale_date:r.date, account_name:r.accountName, account_type:r.accountType==='new'?'new':'existing', robux_amount:Number(r.robux)||null, buy_cost:Number(r.capital)||null, plus_fee:Number(r.plusCost)||0, account_cost:r.accountType==='new'?(Number(r.accountCost)||null):null, sale_value:Number(r.salePrice)||null, status:['pending','selling','done'].includes(r.status)?r.status:'pending', updated_at:new Date().toISOString() }; }
+function mapStoreFromDb(r){ return { id:r.id, date:r.sale_date, accountName:r.account_name, accountType:r.account_type==='new'?'new':'old', robux:Number(r.robux_amount)||0, capital:Number(r.buy_cost)||0, plusCost:Number(r.plus_fee)||0, accountCost:Number(r.account_cost)||0, salePrice:Number(r.sale_value)||0, status:r.status||'pending' }; }
+
+async function syncFullTable(table, rows) {
+  if(!cloudUser) return;
+  const {data:existing,error:e1}=await sb.from(table).select('id');
+  if(e1) throw e1;
+  if(rows.length){ const {error}=await sb.from(table).upsert(rows,{onConflict:'id'}); if(error) throw error; }
+  const current=new Set(rows.map(r=>r.id));
+  const stale=(existing||[]).map(x=>x.id).filter(id=>!current.has(id));
+  if(stale.length){ const {error}=await sb.from(table).delete().in('id',stale); if(error) throw error; }
+}
+function queueSync(kind){
+  if(!cloudUser) return;
+  clearTimeout(syncTimers[kind]);
+  syncTimers[kind]=setTimeout(async()=>{
+    try{
+      syncStatus('Menyimpan...');
+      if(kind==='transactions') await syncFullTable('transactions',state.transactions.map(mapTxToDb));
+      if(kind==='wishlist') await syncFullTable('wishlist_items',state.wishlist.map(mapWishToDb));
+      if(kind==='store') await syncFullTable('store_sales',state.store.map(mapStoreToDb));
+      syncStatus('Tersimpan','ok');
+    }catch(err){ console.error(err); syncStatus('Gagal sinkron','error'); }
+  },250);
+}
+saveTransactions=function(){ originalSaveTransactions(); queueSync('transactions'); };
+saveWishlist=function(){ originalSaveWishlist(); queueSync('wishlist'); };
+saveStore=function(){ originalSaveStore(); queueSync('store'); };
+// Robux sync hook
+
+
+async function loadCloudData() {
+  if(!cloudUser) return;
+  syncStatus('Memuat cloud...');
+  const [tx,wish,store,rob]=await Promise.all([
+    sb.from('transactions').select('*').order('tx_date',{ascending:true}),
+    sb.from('wishlist_items').select('*').order('created_at',{ascending:true}),
+    sb.from('store_sales').select('*').order('sale_date',{ascending:true}),
+    Promise.resolve({data:[],error:null})
+  ]);
+  if(tx.error) throw tx.error;
+  if(wish.error) throw wish.error;
+  if(store.error) throw store.error;
+  if(rob.error) throw rob.error;
+
+  // Supabase is the only source of truth. Never restore old localStorage data.
+  state.transactions=(tx.data||[]).map(mapTxFromDb);
+  state.wishlist=(wish.data||[]).map(mapWishFromDb);
+  state.store=(store.data||[]).map(mapStoreFromDb);
+  state.robux=(rob.data||[]).map(mapRobuxFromDb);
+  localStorage.setItem(ROBUX_KEY,JSON.stringify(state.robux));
+
+  // Keep browser cache aligned with cloud (currently empty after reset).
+  originalSaveTransactions();
+  originalSaveWishlist();
+  originalSaveStore();
+
+  setupFilters();
+  render();
+  switchView(state.view||'dashboard');
+  syncStatus('Cloud tersinkron','ok');
+}
+function showSignedIn(user){
+  cloudUser=user;
+  document.getElementById('authGate').classList.add('hidden');
+  const mini=document.getElementById('accountMini'); mini.classList.add('show');
+  document.getElementById('accountEmail').textContent=user.email||'Neyyi Finance';
+}
+function showSignedOut(){
+  cloudUser=null;
+  document.getElementById('authGate').classList.remove('hidden');
+  document.getElementById('accountMini').classList.remove('show');
+}
+
+function withTimeout(promise, ms=12000, label='Permintaan'){
+  return Promise.race([
+    promise,
+    new Promise((_,reject)=>setTimeout(()=>reject(new Error(label+' terlalu lama. Coba lagi.')),ms))
+  ]);
+}
+
+async function ensureOwnerAccess(user){
+  // If this account is already the owner, RLS lets it see the singleton row.
+  const {data:owned,error:selectError}=await withTimeout(
+    sb.from('app_owner').select('user_id').eq('id',true).maybeSingle(),
+    12000,
+    'Verifikasi pemilik'
+  );
+  if(selectError) throw selectError;
+  if(owned?.user_id===user.id) return true;
+
+  // If no owner has been claimed yet, this first authenticated account claims it.
+  const {error:claimError}=await withTimeout(
+    sb.from('app_owner').insert({id:true,user_id:user.id}),
+    12000,
+    'Verifikasi pemilik'
+  );
+  if(!claimError) return true;
+
+  // A duplicate singleton means another account is already the permanent owner.
+  if(claimError.code==='23505' || /duplicate|unique/i.test(claimError.message||'')) return false;
+  throw claimError;
+}
+
+async function enterOwnerSession(user){
+  try{
+    const allowed=await ensureOwnerAccess(user);
+    if(!allowed){
+      await sb.auth.signOut();
+      showSignedOut();
+      authMessage('Akun ini bukan pemilik Neyyi Finance. Akses ditolak.','error');
+      return false;
+    }
+    showSignedIn(user);
+    await loadCloudData();
+    return true;
+  }catch(err){
+    console.error(err);
+    await sb.auth.signOut();
+    showSignedOut();
+    authMessage(err.message||'Gagal memverifikasi akses pemilik.','error');
+    return false;
+  }
+}
+
+document.getElementById('authLoginTab').addEventListener('click',()=>{
+  authMessage('Masuk dengan akun pemilik Neyyi Finance.');
+});
+
+document.getElementById('authForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const email=document.getElementById('authEmail').value.trim();
+  const password=document.getElementById('authPassword').value;
+  if(!email||password.length<6){ authMessage('Isi email valid dan password minimal 6 karakter.','error'); return; }
+  document.getElementById('authSubmit').disabled=true;
+  authMessage('Sedang memverifikasi pemilik...');
+  try{
+    const {data,error}=await sb.auth.signInWithPassword({email,password});
+    if(error) throw error;
+    await enterOwnerSession(data.user);
+  }catch(err){
+    authMessage(err.message||'Gagal masuk ke Supabase.','error');
+  }finally{
+    document.getElementById('authSubmit').disabled=false;
+  }
+});
+
+document.getElementById('logoutBtn').addEventListener('click',async()=>{
+  await sb.auth.signOut();
+  showSignedOut();
+  authMessage('Masuk dengan akun pemilik Neyyi Finance.');
+});
+
+sb.auth.onAuthStateChange((event,session)=>{
+  // Do not await Supabase API calls inside this callback.
+  // Defer owner verification to avoid supabase-js auth deadlocks.
+  if(session?.user){
+    if(!cloudUser||cloudUser.id!==session.user.id){
+      setTimeout(() => { enterOwnerSession(session.user); }, 0);
+    }
+  }else{
+    showSignedOut();
+  }
+});
+
+(async()=>{
+  const {data}=await sb.auth.getSession();
+  if(data.session?.user) await enterOwnerSession(data.session.user);
+  else {
+    showSignedOut();
+    authMessage('Masuk dengan akun pemilik Neyyi Finance.');
+  }
+})();
+</script>
+
+
+<style>
+.robux-timeline-btn{border:1px solid #ecd4df;background:#fff7fb;color:#8e6679;border-radius:10px;padding:7px 10px;font-size:10px;font-weight:800;cursor:pointer}
+.robux-timeline-modal{position:fixed;inset:0;z-index:120;display:none;place-items:center;padding:20px}
+.robux-timeline-modal.show{display:grid}
+.robux-timeline-box{background:#fffafd;border:1px solid #edcddc;border-radius:24px;padding:24px;max-width:380px;width:100%;box-shadow:0 34px 100px rgba(95,48,71,.22)}
+.robux-timeline-box h3{margin:0 0 15px;color:#5b3e4c}
+.robux-line{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f1dfe7;font-size:12px}
+</style>
+<div id="robuxTimelineModal" class="robux-timeline-modal">
+<div class="robux-timeline-box">
+<h3>Timeline Robux</h3>
+<div id="robuxTimelineContent"></div>
+<button class="secondary-btn" onclick="closeRobuxTimeline()">Tutup</button>
+</div></div>
+<script>
+/* Robux timeline logic: one record, two events.
+   buy_date affects expense month; sell_date affects income/profit month. */
+const ROBUX_TABLE='robux_transactions';
+function openRobuxTimeline(item){
+ const modal=document.getElementById('robuxTimelineModal');
+ document.getElementById('robuxTimelineContent').innerHTML=`
+ <div class="robux-line"><span>🛒 Dibeli</span><strong>${item.buy_date||'-'}</strong></div>
+ <div class="robux-line"><span>💰 Dijual</span><strong>${item.sell_date||'-'}</strong></div>
+ <div class="robux-line"><span>📈 Profit</span><strong>Rp ${((Number(item.sell_value)||0)-(Number(item.buy_cost)||0)).toLocaleString('id-ID')}</strong></div>`;
+ modal.classList.add('show');
+}
+function closeRobuxTimeline(){document.getElementById('robuxTimelineModal').classList.remove('show');}
+</script>
+
+<div id="robuxEditModal" class="robux-timeline-modal">
+<div class="robux-timeline-box">
+<h3>Edit Robux</h3>
+<div class="field"><span>Nama</span><input id="editRobuxName"></div>
+<div class="field"><span>Jumlah Robux</span><input id="editRobuxAmount" type="number"></div>
+<div class="field"><span>Modal Beli</span><input id="editRobuxBuy" type="number"></div>
+<div class="field"><span>Tanggal Beli</span><input id="editRobuxBuyDate" type="date"></div>
+<div class="field"><span>Harga Jual</span><input id="editRobuxSell" type="number"></div>
+<div class="field"><span>Tanggal Jual</span><input id="editRobuxSellDate" type="date"></div>
+<div class="form-actions"><button class="secondary-btn" onclick="closeRobuxEdit()">Batal</button><button class="primary-btn" onclick="saveRobuxEdit()">Simpan</button></div>
+</div></div>
+<script>
+// Final Robux polish: clean CRUD + modal edit + validation
+let editingRobuxId=null;
+(function(){
+ window.renderRobux=function(){
+  const b=document.getElementById('robuxBody'); if(!b)return;
+  b.innerHTML=(state.robux||[]).map(r=>`<tr>
+   <td>${r.name||'-'}</td>
+   <td>${Number(r.amount||r.robux_amount||0).toLocaleString('id-ID')}</td>
+   <td>${currency(r.buy_cost||0)}</td>
+   <td>${currency((r.sell_value||0)-(r.buy_cost||0))}</td>
+   <td><button class="robux-timeline-btn" onclick='openRobuxTimeline(${JSON.stringify(r).replaceAll("'","&apos;")})'>📅 Lihat</button></td>
+   <td>${r.status==='sold'?'Terjual':'Disimpan'}<div class="row-actions" style="margin-top:6px"><button class="icon-action" onclick="editRobux('${r.id}')">✎</button><button class="icon-action" onclick="deleteRobux('${r.id}')">🗑</button></div></td></tr>`).join('')||'<tr><td colspan="6" class="empty-state">Belum ada Robux</td></tr>';
+ };
+ window.deleteRobux=function(id){if(!confirm('Hapus transaksi Robux ini?'))return;state.robux=state.robux.filter(x=>x.id!==id);saveRobux();renderRobux();};
+ window.editRobux=function(id){
+  const r=state.robux.find(x=>x.id===id);if(!r)return;
+  editingRobuxId=id;
+  editRobuxName.value=r.name||''; editRobuxAmount.value=r.amount||0; editRobuxBuy.value=r.buy_cost||0; editRobuxBuyDate.value=r.buy_date||''; editRobuxSell.value=r.sell_value||0; editRobuxSellDate.value=r.sell_date||'';
+  document.getElementById('robuxEditModal').classList.add('show');
+ };
+ window.closeRobuxEdit=function(){document.getElementById('robuxEditModal').classList.remove('show');editingRobuxId=null;};
+ window.saveRobuxEdit=function(){
+  const r=state.robux.find(x=>x.id===editingRobuxId);if(!r)return;
+  if(editRobuxSellDate.value && editRobuxBuyDate.value && editRobuxSellDate.value<editRobuxBuyDate.value){alert('Tanggal jual tidak boleh sebelum tanggal beli');return;}
+  r.name=editRobuxName.value; r.amount=Number(editRobuxAmount.value||0); r.buy_cost=Number(editRobuxBuy.value||0); r.buy_date=editRobuxBuyDate.value; r.sell_value=Number(editRobuxSell.value||0); r.sell_date=editRobuxSellDate.value||null; r.status=r.sell_date?'sold':'holding';
+  saveRobux();renderRobux();closeRobuxEdit();
+ };
+})();
+</script>
+</body>
+</html>
